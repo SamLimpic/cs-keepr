@@ -4,7 +4,7 @@ using keepr.server.Interfaces;
 
 namespace keepr.server.Models
 {
-    public class Value : IItem
+    public class Keep : IItem
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -19,5 +19,21 @@ namespace keepr.server.Models
         [Required]
         [MinLength(1)]
         public string Name { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        public string Description { get; set; }
+
+        [Required]
+        public string Img { get; set; } = "http://www.fillmurray.com/300/300";
+
+        [Required]
+        public int Views { get; set; } = 0;
+
+        [Required]
+        public int Shares { get; set; } = 0;
+
+        [Required]
+        public int Keeps { get; set; } = 0;
     }
 }

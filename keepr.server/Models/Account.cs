@@ -7,9 +7,5 @@ namespace keepr.server.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-
-
-        public string Email { get; set; }
-
     }
 }

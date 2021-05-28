@@ -8,78 +8,81 @@ using keepr.server.Interfaces;
 
 namespace keepr.server.Repositories
 {
-    public class ValuesRepository : IRepository<Value>
+    public class VaultsRepository : IRepository<Vault>
     {
         private readonly IDbConnection _db;
 
-        public ValuesRepository(IDbConnection db)
+        public VaultsRepository(IDbConnection db)
         {
             _db = db;
         }
 
 
 
-        public List<Value> GetAll()
+        public List<Vault> GetAll()
         {
             string sql = @"
                 SELECT
                 v.*
                 a.name,
                 a.picture
-                FROM values v
+                FROM vaults v
                 JOIN accounts a ON v.creatorId = a.id
                 ";
-            return _db.Query<Value, Account, Value>(sql, (value, account) =>
+            return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
             {
-                value.Creator = account;
-                return value;
+                vault.Creator = account;
+                return vault;
             }, splitOn: "id").ToList();
         }
 
 
 
-        public Value GetById(int id)
+        public Vault GetById(int id)
         {
             string sql = @"
                 SELECT 
                 v.*,
                 a.name,
                 a.picture 
-                FROM values v
+                FROM vaults v
                 JOIN accounts a ON v.creatorId = a.id
                 WHERE v.id = @id
                 ";
-            return _db.Query<Value, Account, Value>(sql, (value, account) =>
+            return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
             {
-                value.Creator = account;
-                return value;
+                vault.Creator = account;
+                return vault;
             }
             , new { id }, splitOn: "id").FirstOrDefault();
         }
 
 
 
-        public Value Create(Value data)
+        public Vault Create(Vault body)
         {
             string sql = @"
-                INSERT INTO values
-                (creatorId, name)
+                INSERT INTO vaults
+                (creatorId, name, description, isPrivate, img)
                 VALUES
-                (@CreatorId, @Name)
+                (@CreatorId, @Name, @Description, @IsPrivate, @Img)
                 SELECT LAST_INSERT_ID()
                 ";
-            data.Id = _db.ExecuteScalar<int>(sql, data);
-            return data;
+            body.Id = _db.ExecuteScalar<int>(sql, body);
+            return body;
         }
 
 
 
-        public Value Update(Value edit)
+        public Vault Update(Vault edit)
         {
             string sql = @"
-            UPDATE values
+            UPDATE vaults
             SET
-                name = @Name
+                name = @Name,
+                description = @Description,
+                isPrivate = @IsPrivate,
+                img = @Img
             WHERE id = @Id";
             _db.Execute(sql, edit);
             return edit;
@@ -89,7 +92,7 @@ namespace keepr.server.Repositories
 
         public void Delete(int id)
         {
-            string sql = "DELETE FROM values WHERE id = @id LIMIT 1";
+            string sql = "DELETE FROM vaults WHERE id = @id LIMIT 1";
             _db.Execute(sql, new { id });
         }
     }

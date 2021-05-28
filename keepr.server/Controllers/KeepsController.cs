@@ -14,22 +14,22 @@ namespace keepr.server.Controllers
 
     [ApiController]
     [Route("api/[controller]")]
-    public class ValuesController : ControllerBase
+    public class KeepsController : ControllerBase
     {
-        private readonly ValuesService _service;
+        private readonly KeepsService _service;
 
-        public ValuesController(ValuesService service)
+        public KeepsController(KeepsService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public ActionResult<List<Value>> GetAll()
+        public ActionResult<List<Keep>> GetAll()
         {
             try
             {
-                List<Value> values = _service.GetAll();
-                return Ok(values);
+                List<Keep> keeps = _service.GetAll();
+                return Ok(keeps);
             }
             catch (Exception e)
             {
@@ -40,12 +40,12 @@ namespace keepr.server.Controllers
 
 
         [HttpGet("{id}")]
-        public ActionResult<Value> GetById(int id)
+        public ActionResult<Keep> GetById(int id)
         {
             try
             {
-                Value value = _service.GetById(id);
-                return Ok(value);
+                Keep keep = _service.GetById(id);
+                return Ok(keep);
             }
             catch (Exception e)
             {
@@ -57,15 +57,15 @@ namespace keepr.server.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Value>> Create([FromBody] Value data)
+        public async Task<ActionResult<Keep>> Create([FromBody] Keep body)
         {
             try
             {
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                data.CreatorId = userInfo.Id;
-                Value newValue = _service.Create(data);
-                newValue.Creator = userInfo;
-                return Ok(newValue);
+                body.CreatorId = userInfo.Id;
+                Keep newKeep = _service.Create(body);
+                newKeep.Creator = userInfo;
+                return Ok(newKeep);
             }
             catch (Exception e)
             {
@@ -77,13 +77,13 @@ namespace keepr.server.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<Value>> Update([FromBody] Value edit, int id)
+        public async Task<ActionResult<Keep>> Update([FromBody] Keep edit, int id)
         {
             try
             {
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
                 edit.Id = id;
-                Value update = _service.Update(edit, userInfo.Id);
+                Keep update = _service.Update(edit, userInfo.Id);
                 return Ok(update);
             }
             catch (Exception e)
