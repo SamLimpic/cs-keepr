@@ -56,12 +56,13 @@ namespace keepr.server.Controllers
 
 
         [HttpGet("{id}/keeps")]
-        public ActionResult<IEnumerable<VaultKeepView>> GetVaultKeeps(int id)
+        public async Task<ActionResult<IEnumerable<VaultKeepView>>> GetVaultKeeps(int id)
         {
             try
             {
-                IEnumerable<VaultKeepView> reagents = _service.GetVaultKeeps(id);
-                return Ok(reagents);
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                IEnumerable<VaultKeepView> keeps = _service.GetVaultKeeps(id, userInfo);
+                return Ok(keeps);
             }
             catch (Exception e)
             {

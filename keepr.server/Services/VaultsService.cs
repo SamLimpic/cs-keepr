@@ -48,10 +48,10 @@ namespace keepr.server.Services
 
 
 
-        internal IEnumerable<VaultKeepView> GetVaultKeeps(int id)
+        internal IEnumerable<VaultKeepView> GetVaultKeeps(int id, Account userInfo)
         {
             Vault vault = _repo.GetById(id);
-            if (vault.IsPrivate == true)
+            if (vault.IsPrivate == true && vault.CreatorId != userInfo.Id)
             {
                 throw new Exception("That vault is private!");
             }
