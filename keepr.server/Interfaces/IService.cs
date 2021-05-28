@@ -4,7 +4,7 @@ namespace keepr.server.Interfaces
 {
     public interface IService<T>
     {
-        List<T> GetAll();
+        IEnumerable<T> GetAll();
         T GetById(int id);
         T Create(T data);
         T Update(T data, string creatorId);

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using keepr.server.Models;
 using keepr.server.Repositories;
 using keepr.server.Interfaces;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace keepr.server.Services
 {
@@ -20,7 +22,7 @@ namespace keepr.server.Services
 
 
 
-        public List<Vault> GetAll()
+        public IEnumerable<Vault> GetAll()
         {
             return _repo.GetAll();
         }
@@ -29,13 +31,30 @@ namespace keepr.server.Services
 
         public Vault GetById(int id)
         {
-            return _repo.GetById(id);
+            Vault vault = _repo.GetById(id);
+            if (vault == null)
+            {
+                throw new Exception("Invalid Id");
+            }
+            return vault;
+        }
+
+
+
+        internal IEnumerable<Vault> GetVaultsByProfileId(string id)
+        {
+            return _repo.GetVaultsByProfileId(id);
         }
 
 
 
         internal IEnumerable<VaultKeepView> GetVaultKeeps(int id)
         {
+            Vault vault = _repo.GetById(id);
+            if (vault.IsPrivate == true)
+            {
+                throw new Exception("That vault is private!");
+            }
             return _vkRepo.GetVaultKeeps(id);
         }
 
@@ -58,9 +77,9 @@ namespace keepr.server.Services
             {
                 throw new Exception("Invalid Id");
             }
-            if (edit.CreatorId != creatorId)
+            if (original.CreatorId != creatorId)
             {
-                throw new Exception("You cannot delete another users Vault");
+                throw new Exception("You cannot edit another users Vault");
             }
             return _repo.Update(original);
         }

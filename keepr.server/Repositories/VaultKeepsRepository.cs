@@ -23,8 +23,8 @@ namespace keepr.server.Repositories
         {
             string sql = @"
                 SELECT 
-                vk.*,
-                FROM vaultKeepss vk
+                vk.*
+                FROM vault_keeps vk
                 JOIN accounts a ON vk.creatorId = a.id
                 WHERE vk.id = @id
                 ";
@@ -33,24 +33,23 @@ namespace keepr.server.Repositories
 
 
 
-        public List<VaultKeepView> GetVaultKeeps(int id)
+        public IEnumerable<VaultKeepView> GetVaultKeeps(int id)
         {
             string sql = @"
                 SELECT
-                k*,
-                v.name as vaultName,
-                vk.id,
-                vk.vaultId,
-                vk.keepId,
-                a.name,
-                a.picture
-                FROM vault_keeps vk
-                JOIN vaults v ON v.id = vk.vaultId
-                JOIN keeps k ON k.id = vk.keepId
-                JOIN accounts a ON v.creatorId = a.id
-                WHERE vk.vaultId = @id
+                    k.*,
+                    v.name as vault,
+                    v.id as vaultKeepId,
+                    vk.vaultId,
+                    vk.keepId
+                FROM 
+                    vault_keeps vk
+                    JOIN vaults v ON v.id = vk.vaultId
+                    JOIN keeps k ON k.id = vk.keepId
+                    JOIN accounts a ON vk.creatorId = a.id
+                WHERE vaultId = @id
                 ";
-            return _db.Query<VaultKeepView>(sql, new { id }).ToList();
+            return _db.Query<VaultKeepView>(sql, new { id });
         }
 
 
@@ -58,10 +57,10 @@ namespace keepr.server.Repositories
         public VaultKeepDTO Create(VaultKeepDTO body)
         {
             string sql = @"
-                INSERT INTO vaultKeeps
+                INSERT INTO vault_keeps
                 (creatorId, VaultId, KeepId)
                 VALUES
-                (@CreatorId, @VaultId, @KeepId)
+                (@CreatorId, @VaultId, @KeepId);
                 SELECT LAST_INSERT_ID()
                 ";
             body.Id = _db.ExecuteScalar<int>(sql, body);
@@ -73,7 +72,7 @@ namespace keepr.server.Repositories
         public VaultKeepDTO Update(VaultKeepDTO edit)
         {
             string sql = @"
-            UPDATE vaultKeeps
+            UPDATE vault_keeps
             SET
                 vaultId = @VaultId,
                 keepId = @KeepId
@@ -86,7 +85,7 @@ namespace keepr.server.Repositories
 
         public void Delete(int id)
         {
-            string sql = "DELETE FROM vaults WHERE id = @id LIMIT 1";
+            string sql = "DELETE FROM vault_keeps WHERE id = @id LIMIT 1";
             _db.Execute(sql, new { id });
         }
     }

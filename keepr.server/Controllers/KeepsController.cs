@@ -24,11 +24,11 @@ namespace keepr.server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Keep>> GetAll()
+        public ActionResult<IEnumerable<Keep>> GetAll()
         {
             try
             {
-                List<Keep> keeps = _service.GetAll();
+                IEnumerable<Keep> keeps = _service.GetAll();
                 return Ok(keeps);
             }
             catch (Exception e)

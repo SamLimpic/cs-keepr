@@ -24,11 +24,11 @@ namespace keepr.server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Vault>> GetAll()
+        public ActionResult<IEnumerable<Vault>> GetAll()
         {
             try
             {
-                List<Vault> vaults = _service.GetAll();
+                IEnumerable<Vault> vaults = _service.GetAll();
                 return Ok(vaults);
             }
             catch (Exception e)
@@ -55,7 +55,7 @@ namespace keepr.server.Controllers
 
 
 
-        [HttpGet("{id}/reagents")]
+        [HttpGet("{id}/keeps")]
         public ActionResult<IEnumerable<VaultKeepView>> GetVaultKeeps(int id)
         {
             try

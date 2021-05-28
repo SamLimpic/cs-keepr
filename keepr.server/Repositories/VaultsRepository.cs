@@ -19,21 +19,21 @@ namespace keepr.server.Repositories
 
 
 
-        public List<Vault> GetAll()
+        public IEnumerable<Vault> GetAll()
         {
             string sql = @"
                 SELECT
-                v.*
-                a.name,
-                a.picture
+                v.*,
+                a.*
                 FROM vaults v
                 JOIN accounts a ON v.creatorId = a.id
+                WHERE v.isPrivate = 0
                 ";
             return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
             {
                 vault.Creator = account;
                 return vault;
-            }, splitOn: "id").ToList();
+            }, splitOn: "id");
         }
 
 
@@ -43,11 +43,10 @@ namespace keepr.server.Repositories
             string sql = @"
                 SELECT 
                 v.*,
-                a.name,
-                a.picture 
+                a.*
                 FROM vaults v
                 JOIN accounts a ON v.creatorId = a.id
-                WHERE v.id = @id
+                WHERE v.id = @id AND v.isPrivate = 0
                 ";
             return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
             {
@@ -57,7 +56,24 @@ namespace keepr.server.Repositories
             , new { id }, splitOn: "id").FirstOrDefault();
         }
 
-
+        internal IEnumerable<Vault> GetVaultsByProfileId(string id)
+        {
+            string sql = @"
+                SELECT 
+                v.*,
+                a.* 
+                FROM vaults v
+                JOIN accounts a ON v.creatorId = a.id
+                WHERE
+                v.creatorId = @id AND v.isPrivate = 0
+                ";
+            return _db.Query<Vault, Account, Vault>(sql, (vault, account) =>
+            {
+                vault.Creator = account;
+                return vault;
+            }
+            , new { id }, splitOn: "id");
+        }
 
         public Vault Create(Vault body)
         {
@@ -65,7 +81,7 @@ namespace keepr.server.Repositories
                 INSERT INTO vaults
                 (creatorId, name, description, isPrivate, img)
                 VALUES
-                (@CreatorId, @Name, @Description, @IsPrivate, @Img)
+                (@CreatorId, @Name, @Description, @IsPrivate, @Img);
                 SELECT LAST_INSERT_ID()
                 ";
             body.Id = _db.ExecuteScalar<int>(sql, body);
@@ -83,7 +99,8 @@ namespace keepr.server.Repositories
                 description = @Description,
                 isPrivate = @IsPrivate,
                 img = @Img
-            WHERE id = @Id";
+            WHERE id = @Id
+            ";
             _db.Execute(sql, edit);
             return edit;
         }

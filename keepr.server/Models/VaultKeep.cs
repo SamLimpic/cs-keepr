@@ -18,10 +18,12 @@ namespace keepr.server.Models
 
     public class VaultKeepView : Keep
     {
+
+        public int VaultKeepId { get; set; }
+
         public int VaultId { get; set; }
 
         public int KeepId { get; set; }
 
-        public string VaultName { get; set; }
     }
 }

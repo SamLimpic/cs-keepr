@@ -29,21 +29,21 @@ namespace keepr.server.Services
 
         public Profile GetProfileById(string id)
         {
-            return _repo.GetById(id);
+            return _repo.GetProfileById(id);
         }
 
 
 
-        public Account GetProfileByEmail(string email)
+        public Profile GetProfileByEmail(string email)
         {
-            return _repo.GetByEmail(email);
+            return _repo.GetProfileByEmail(email);
         }
 
 
 
-        public Account Edit(Account edit, string userEmail)
+        public Account Edit(Account edit, string id)
         {
-            Account original = GetProfileByEmail(userEmail);
+            Account original = _repo.GetById(id);
             original.Name = edit.Name.Length > 0 ? edit.Name : original.Name;
             original.Picture = edit.Picture.Length > 0 ? edit.Picture : original.Picture;
             return _repo.Edit(original);

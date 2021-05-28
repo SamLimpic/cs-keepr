@@ -19,13 +19,12 @@ namespace keepr.server.Repositories
 
 
 
-        public List<Keep> GetAll()
+        public IEnumerable<Keep> GetAll()
         {
             string sql = @"
                 SELECT
-                k.*
-                a.name,
-                a.picture
+                k.*,
+                a.*
                 FROM keeps k
                 JOIN accounts a ON k.creatorId = a.id
                 ";
@@ -33,9 +32,8 @@ namespace keepr.server.Repositories
             {
                 keep.Creator = account;
                 return keep;
-            }, splitOn: "id").ToList();
+            }, splitOn: "id");
         }
-
 
 
         public Keep GetById(int id)
@@ -43,8 +41,7 @@ namespace keepr.server.Repositories
             string sql = @"
                 SELECT 
                 k.*,
-                a.name,
-                a.picture 
+                a.*
                 FROM keeps k
                 JOIN accounts a ON k.creatorId = a.id
                 WHERE k.id = @id
@@ -59,13 +56,34 @@ namespace keepr.server.Repositories
 
 
 
+        internal IEnumerable<Keep> GetKeepsByProfileId(string id)
+        {
+            string sql = @"
+                SELECT 
+                k.*,
+                a.* 
+                FROM keeps k
+                JOIN accounts a ON k.creatorId = a.id
+                WHERE
+                k.creatorId = @id
+                ";
+            return _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+            {
+                keep.Creator = account;
+                return keep;
+            }
+            , new { id }, splitOn: "id");
+        }
+
+
+
         public Keep Create(Keep body)
         {
             string sql = @"
                 INSERT INTO keeps
                 (creatorId, name, description, img, views, shares, keeps)
                 VALUES
-                (@CreatorId, @Name, @Description, @Img, @Views, @Shares, @Keeps)
+                (@CreatorId, @Name, @Description, @Img, @Views, @Shares, @Keeps);
                 SELECT LAST_INSERT_ID()
                 ";
             body.Id = _db.ExecuteScalar<int>(sql, body);
@@ -85,7 +103,8 @@ namespace keepr.server.Repositories
                 views = @Views,
                 shares = @Shares,
                 keeps = @Keeps
-            WHERE id = @Id";
+            WHERE id = @Id
+            ";
             _db.Execute(sql, edit);
             return edit;
         }

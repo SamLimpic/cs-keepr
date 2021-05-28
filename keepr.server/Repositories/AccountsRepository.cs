@@ -23,10 +23,18 @@ namespace keepr.server.Repositories
 
 
 
-        internal Account GetByEmail(string userEmail)
+        internal Profile GetProfileById(string id)
         {
-            string sql = "SELECT * FROM Accounts WHERE email = @userEmail";
-            return _db.QueryFirstOrDefault<Account>(sql, new { userEmail });
+            string sql = "SELECT * FROM accounts WHERE id = @id";
+            return _db.QueryFirstOrDefault<Profile>(sql, new { id });
+        }
+
+
+
+        internal Profile GetProfileByEmail(string userEmail)
+        {
+            string sql = "SELECT * FROM accounts WHERE email = @userEmail";
+            return _db.QueryFirstOrDefault<Profile>(sql, new { userEmail });
         }
 
 
@@ -47,7 +55,7 @@ namespace keepr.server.Repositories
         internal Account Edit(Account update)
         {
             string sql = @"
-            UPDATE Accounts
+            UPDATE accounts
             SET 
               name = @Name,
               picture = @Picture

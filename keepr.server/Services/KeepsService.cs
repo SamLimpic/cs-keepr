@@ -17,7 +17,7 @@ namespace keepr.server.Services
 
 
 
-        public List<Keep> GetAll()
+        public IEnumerable<Keep> GetAll()
         {
             return _repo.GetAll();
         }
@@ -26,7 +26,19 @@ namespace keepr.server.Services
 
         public Keep GetById(int id)
         {
-            return _repo.GetById(id);
+            Keep keep = _repo.GetById(id);
+            if (keep == null)
+            {
+                throw new Exception("Invalid Id");
+            }
+            return keep;
+        }
+
+
+
+        internal IEnumerable<Keep> GetKeepsByProfileId(string id)
+        {
+            return _repo.GetKeepsByProfileId(id);
         }
 
 
@@ -51,13 +63,12 @@ namespace keepr.server.Services
             {
                 throw new Exception("Invalid Id");
             }
-            if (edit.CreatorId != creatorId)
+            if (original.CreatorId != creatorId)
             {
-                throw new Exception("You cannot delete another users Keep");
+                throw new Exception("You cannot edit another users Keep");
             }
             return _repo.Update(original);
         }
-
 
 
         public void Delete(int id, string creatorId)
