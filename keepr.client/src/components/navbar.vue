@@ -1,13 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img
-          alt="logo"
-          src="../assets/img/cw-logo.png"
-          height="45"
-        />
-      </div>
+      <h1><span><i class="fab fa-kaggle text-info"></i></span>eepr</h1>
     </router-link>
     <button
       class="navbar-toggler"
