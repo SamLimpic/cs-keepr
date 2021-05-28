@@ -18,9 +18,12 @@ namespace keepr.server.Controllers
     {
         private readonly VaultKeepsService _service;
 
-        public VaultKeepsController(VaultKeepsService service)
+        private readonly KeepsService _kService;
+
+        public VaultKeepsController(VaultKeepsService service, KeepsService kService)
         {
             _service = service;
+            _kService = kService;
         }
 
 
@@ -50,6 +53,7 @@ namespace keepr.server.Controllers
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
                 body.CreatorId = userInfo.Id;
                 VaultKeepDTO newVaultKeep = _service.Create(body);
+                _kService.IncrementKeeps(newVaultKeep.KeepId);
                 return Ok(newVaultKeep);
             }
             catch (Exception e)

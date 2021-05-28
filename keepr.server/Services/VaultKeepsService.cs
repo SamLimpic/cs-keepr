@@ -10,9 +10,12 @@ namespace keepr.server.Services
     {
         private readonly VaultKeepsRepository _repo;
 
-        public VaultKeepsService(VaultKeepsRepository repo)
+        private readonly KeepsService _kService;
+
+        public VaultKeepsService(VaultKeepsRepository repo, KeepsService kService)
         {
             _repo = repo;
+            _kService = kService;
         }
 
 
@@ -42,7 +45,7 @@ namespace keepr.server.Services
             }
             if (edit.CreatorId != creatorId)
             {
-                throw new Exception("You cannot delete another users Vault");
+                throw new Exception("You cannot edit another users Vault");
             }
             return _repo.Update(original);
         }
@@ -60,6 +63,7 @@ namespace keepr.server.Services
             {
                 throw new Exception("You cannot delete another users Vault");
             }
+            _kService.DecrementKeeps(vaultKeep.KeepId);
             _repo.Delete(id);
         }
     }

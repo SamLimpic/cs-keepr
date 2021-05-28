@@ -31,14 +31,6 @@ namespace keepr.server.Repositories
 
 
 
-        internal Profile GetProfileByEmail(string userEmail)
-        {
-            string sql = "SELECT * FROM accounts WHERE email = @userEmail";
-            return _db.QueryFirstOrDefault<Profile>(sql, new { userEmail });
-        }
-
-
-
         internal Account Create(Account userInfo)
         {
             string sql = @"

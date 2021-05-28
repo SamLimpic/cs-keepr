@@ -76,7 +76,6 @@ namespace keepr.server.Repositories
         }
 
 
-
         public Keep Create(Keep body)
         {
             string sql = @"
@@ -99,14 +98,27 @@ namespace keepr.server.Repositories
             SET
                 name = @Name,
                 description = @Description,
-                img = @Img,
+                img = @Img
+            WHERE id = @Id
+            ";
+            _db.Execute(sql, edit);
+            return edit;
+        }
+
+
+
+        internal Keep UpdateCount(Keep keep)
+        {
+            string sql = @"
+            UPDATE keeps
+            SET
                 views = @Views,
                 shares = @Shares,
                 keeps = @Keeps
             WHERE id = @Id
             ";
-            _db.Execute(sql, edit);
-            return edit;
+            _db.Execute(sql, keep);
+            return keep;
         }
 
 

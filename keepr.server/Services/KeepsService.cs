@@ -6,7 +6,7 @@ using keepr.server.Interfaces;
 
 namespace keepr.server.Services
 {
-    public class KeepsService : IService<Keep>
+    public class KeepsService
     {
         private readonly KeepsRepository _repo;
 
@@ -31,6 +31,7 @@ namespace keepr.server.Services
             {
                 throw new Exception("Invalid Id");
             }
+            IncrementViews(keep);
             return keep;
         }
 
@@ -56,9 +57,6 @@ namespace keepr.server.Services
             original.Name = edit.Name.Length > 0 ? edit.Name : original.Name;
             original.Description = edit.Description.Length > 0 ? edit.Description : original.Description;
             original.Img = edit.Img.Length > 0 ? edit.Img : original.Img;
-            original.Views = edit.Views > 0 ? edit.Views : original.Views;
-            original.Shares = edit.Shares > 0 ? edit.Shares : original.Shares;
-            original.Keeps = edit.Keeps > 0 ? edit.Keeps : original.Keeps;
             if (original == null)
             {
                 throw new Exception("Invalid Id");
@@ -69,6 +67,41 @@ namespace keepr.server.Services
             }
             return _repo.Update(original);
         }
+
+
+
+        public Keep IncrementViews(Keep keep)
+        {
+            keep.Views++;
+            return _repo.UpdateCount(keep);
+        }
+
+
+
+        public Keep IncrementShares(Keep keep)
+        {
+            keep.Shares++;
+            return _repo.UpdateCount(keep);
+        }
+
+
+
+        public Keep IncrementKeeps(int id)
+        {
+            Keep keep = _repo.GetById(id);
+            keep.Keeps++;
+            return _repo.UpdateCount(keep);
+        }
+
+
+
+        public Keep DecrementKeeps(int id)
+        {
+            Keep keep = _repo.GetById(id);
+            keep.Keeps--;
+            return _repo.UpdateCount(keep);
+        }
+
 
 
         public void Delete(int id, string creatorId)

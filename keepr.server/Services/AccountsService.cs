@@ -34,13 +34,6 @@ namespace keepr.server.Services
 
 
 
-        public Profile GetProfileByEmail(string email)
-        {
-            return _repo.GetProfileByEmail(email);
-        }
-
-
-
         public Account Edit(Account edit, string id)
         {
             Account original = _repo.GetById(id);
