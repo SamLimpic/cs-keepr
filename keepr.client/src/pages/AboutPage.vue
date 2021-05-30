@@ -2,7 +2,7 @@
   <div class="access-test container">
     <div class="row justify-content-center">
       <div class="col-md-12 col-8 text-center">
-        <h2 class="my-3">
+        <h2 class="my-3 text-dark">
           <u> Accessibility Test Page </u>
         </h2>
         <div class="row justify-content-around p-3 my-3 shadow bg-light">
@@ -12,7 +12,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
-            <button type="button" class="btn btn-lg btn-secondary">
+            <button type="button" class="btn btn-lg btn-secondary" disabled>
               Secondary
             </button>
           </div>
@@ -44,7 +44,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
-            <button type="button" class="btn btn-lg btn-outline-secondary">
+            <button type="button" class="btn btn-lg btn-outline-secondary" disabled>
               Secondary
             </button>
           </div>
@@ -54,7 +54,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
-            <button type="button" class="btn btn-lg btn-outline-warning">
+            <button type="button" class="btn btn-lg btn-outline-warning" disabled>
               Warning
             </button>
           </div>
@@ -64,13 +64,13 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
-            <button type="button" class="btn btn-lg btn-outline-info">
+            <button type="button" class="btn btn-lg btn-outline-info" disabled>
               Info
             </button>
           </div>
         </div>
         <div class="row justify-content-around">
-          <div class="col-10 shadow bg-light p-3 my-3">
+          <div class="col-10 shadow bg-light text-dark p-3 my-3">
             <h3><u>Header On Light Background</u></h3>
             <h4><b>Approriate Header Hierarchy</b></h4>
             <h5><i>And Various Font Formats</i></h5>

@@ -1,5 +1,15 @@
 <template>
-  <div class="home container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
+  <div class="vault container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
+    <div class="row justify-content-start">
+      <div class="col pt-md-4 pt-2 px-md-4 px-2">
+        <h2 class="font-lg">
+          Vault Title
+        </h2>
+        <h2>
+          Keeps:
+        </h2>
+      </div>
+    </div>
     <div class="row justify-content-center">
       <div class="col-md-3 col-6 p-md-4 p-2">
         <div class="position-relative">
@@ -52,7 +62,7 @@
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 export default {
-  name: 'Home',
+  name: 'Vault',
   setup() {
     const state = reactive({
       loading: false,
