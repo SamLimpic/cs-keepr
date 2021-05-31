@@ -27,6 +27,6 @@ namespace keepr.server.Models
         [Required]
         public bool IsPrivate { get; set; } = false;
 
-        public string Img { get; set; }
+        public string Img { get; set; } = "http://www.fillmurray.com/g/300/300";
     }
 }

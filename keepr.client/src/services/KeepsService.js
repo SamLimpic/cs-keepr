@@ -17,6 +17,10 @@ class KeepsService {
     AppState.keeps = res.data
   }
 
+  async createKeep() {
+    await api.post('api/keeps', AppState.newKeep)
+  }
+
   async deleteKeep(keepId) {
     await api.delete(`api/keeps/${keepId}`)
   }

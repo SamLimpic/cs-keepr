@@ -28,11 +28,6 @@
             About
           </router-link>
         </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'Profile' }" class="nav-link outline font-nav">
-            Profile
-          </router-link>
-        </li>
       </ul>
       <span class="navbar-text text-light">
         <button
@@ -61,9 +56,9 @@
             :class="{ show: state.dropOpen }"
             @click="state.dropOpen = false"
           >
-            <router-link :to="{ name: 'Account' }">
+            <router-link :to="{ name: 'Profile', params: {id: account.id} }">
               <div class="list-group-item list-group-item-action hoverable font-nav">
-                Account
+                Profile
               </div>
             </router-link>
             <div
@@ -92,6 +87,7 @@ export default {
     return {
       state,
       user: computed(() => AppState.user),
+      account: computed(() => AppState.account),
       async login() {
         AuthService.loginWithPopup()
       },

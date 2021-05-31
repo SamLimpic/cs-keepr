@@ -1,16 +1,16 @@
 # Keepr Requirements
 
-Visitors can see all keeps (login not required)
+<!-- Visitors can see all keeps (login not required) -->
 
-Keep cards are displayed in accordance to mock
+<!-- Keep cards are displayed in accordance to mock -->
 
 Cards follow a mansonry layout (bootstrap card columns OR masonry)
 
-Clicking on a keep card opens the keep in a modal which adheres to mock
+<!-- Clicking on a keep card opens the keep in a modal which adheres to mock -->
 
-All users have a public profile page
+<!-- All users have a public profile page -->
 
-The profile page adheres to mock
+<!-- The profile page adheres to mock -->
 
 Each vault has its own route where users can view all of the keeps in the vault
 
@@ -22,7 +22,7 @@ From the vault page if the user is the creator they can remove keeps from the va
 
 <!-- Users can Register, login and automatically authenticated on refresh -->
 
-Create and Delete Keeps
+<!-- Create and Delete Keeps -->
 
 Create and Delete Vaults
 

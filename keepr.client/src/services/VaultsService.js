@@ -13,22 +13,25 @@ class VaultsService {
   }
 
   async addToVault(vaultId, keep) {
-    const vault = AppState.Vaults.find(v => v.id === vaultId)
+    const vaultKeep = {
+      vaultId: vaultId,
+      keepId: keep.id
+    }
+    await api.post('api/vaultkeeps', vaultKeep)
     await api.post(`api/vaults/${vaultId}/keeps`, keep)
-    Notification.toast(`Added ${keep.name} to ${vault.name}!`, 'success')
   }
 
-  async CreateVault() {
-    await Notification.multiModal()
-    await api.post(`api/profile/${AppState.account.id}/vaults`, AppState.newVault)
-    Notification.toast(`Your new Vault, ${AppState.newVault.name}, was created!`, 'success')
+  async createVault() {
+    await api.post('api/vaults', AppState.newVault)
   }
 
-  async CreateVaultAndAdd(keep) {
-    await Notification.multiModal()
-    await api.post(`api/profile/${AppState.account.id}/vaults`, AppState.newVault)
+  async createVaultAndAdd(keep) {
+    const vaultKeep = {
+      vaultId: AppState.newVault.id,
+      keepId: keep.id
+    }
+    await api.post('api/vaultkeeps', vaultKeep)
     await api.post(`api/vaults/${AppState.newVault.id}/keeps`, keep)
-    Notification.toast(`Added ${keep.name} to your new Vault, ${AppState.newVault.name}!`, 'success')
   }
 
   setActiveVault(vaultId) {

@@ -1,7 +1,7 @@
 <template>
   <div class="home container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
     <div class="row justify-content-center">
-      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
+      <Keep v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
@@ -29,7 +29,6 @@ export default {
       activeKeep: computed(() => AppState.activeKeep)
     })
     onMounted(async() => {
-      state.activeKeep = null
       try {
         await keepsService.getKeeps()
         state.loading = false

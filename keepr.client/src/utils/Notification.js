@@ -53,53 +53,71 @@ export default class Notification {
     })
   }
 
-  static async multiModal() {
+  static async multiModal(str) {
     await Swal.mixin({
-      title: 'Create a New Vault',
+      title: `Create a New ${str}`,
       input: 'text',
       confirmButtonText: 'Next &rarr;',
-      progressSteps: [1, 2, 3, 4]
+      progressSteps: [1, 2, 3]
     }).queue([
       {
-        title: 'What shall we name your Vault?',
+        title: `What shall we name your ${str}?`,
         icon: 'question',
-        text: 'Name...'
+        inputPlaceholder: 'Name...'
       },
       {
-        title: 'Give your Vault a brief description',
+        title: `Give your ${str} a brief description`,
         icon: 'info',
         input: 'textarea',
         inputLabel: 'Description',
         inputPlaceholder: 'Description...',
         inputAttributes: {
-          'aria-label': 'Vault Description'
+          'aria-label': `${str} Description`
         }
       },
       {
-        title: 'Should this Vault be public or private?',
-        icon: 'question',
-        input: 'select',
-        showDenyButton: true,
-        confirmButtonText: 'Public',
-        denyButtonText: 'Private'
-      },
-      {
-        title: 'Add an image to your Vault',
+        title: `Add an image to your ${str}`,
         icon: 'info',
+        input: 'text',
+        inputPlaceholder: 'Img Url...',
         text: "We'll provide a placeholder by default..."
       }
     ]).then((result) => {
-      if (result.value) {
-        AppState.newVault.name = result.value[0]
-        AppState.newVault.description = result.value[1]
-        if (result.isConfirmed) {
-          AppState.newVault.isPrivate = false
-        } else if (result.isDenied) {
-          AppState.newVault.isPrivate = true
+      if (result.value && str === 'Vault') {
+        const item = AppState.newVault
+        item.name = result.value[0]
+        item.description = result.value[1]
+        if (result.value[2] === '') {
+          item.img = 'http://www.fillmurray.com/g/300/300'
+        } else {
+          item.img = result.value[2]
         }
-        if (result.value[3] !== '') {
-          AppState.newVault.img = result.value[3]
+      }
+      if (result.value && str === 'Keep') {
+        const item = AppState.newKeep
+        item.name = result.value[0]
+        item.description = result.value[1]
+        if (result.value[2] === '') {
+          item.img = 'http://www.fillmurray.com//300/300'
+        } else {
+          item.img = result.value[2]
         }
+      }
+    })
+  }
+
+  static async isPrivate() {
+    await Swal.fire({
+      title: 'Do you want your Vault to be Public or Private?',
+      icon: 'question',
+      showDenyButton: true,
+      confirmButtonText: 'Public',
+      denyButtonText: 'Private'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        AppState.newVault.isPrivate = false
+      } else if (result.isDenied) {
+        AppState.newVault.isPrivate = false
       }
     })
   }

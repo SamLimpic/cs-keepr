@@ -8,16 +8,16 @@
         <h2>
           {{ state.profile.name.split('@')[0] }}
         </h2>
-        <h3>Vaults:</h3>
-        <h3>Keeps:</h3>
+        <h3>Vaults: {{ state.vaults.length }}</h3>
+        <h3>Keeps: {{ state.keeps.length }}</h3>
       </div>
     </div>
-    <div id="add-vault" class="row justify-content-start pt-5 pl-2">
+    <div id="add-vault" class="row justify-content-start pt-md-5 pt-3 pl-2">
       <div class="col">
         <h4>
           Vaults
           <span>
-            <button type="button" class="btn btn-outline-info border-0 font-sm py-0 px-2 ml-3">
+            <button type="button" label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-sm py-0 px-2 ml-3" @click="createVault">
               <i class="fas fa-plus"></i>
             </button>
           </span>
@@ -25,31 +25,14 @@
       </div>
     </div>
     <div id="vaults" class="row justify-content-start">
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/250/250" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/240/240" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/230/230" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/215/215" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/210/210" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/g/200/200" alt="">
-      </div>
+      <VaultCard v-for="v in state.vaults" :key="v.id" :card-prop="v" />
     </div>
     <div id="add-keep" class="row justify-content-start pt-5 pl-2">
       <div class="col">
         <h4>
           Keeps
           <span>
-            <button type="button" class="btn btn-outline-info border-0 font-sm py-0 px-2 ml-3">
+            <button type="button" label="Add Keep" class="btn btn-outline-info bg-transparent border-0 font-sm py-0 px-2 ml-3" @click="createKeep">
               <i class="fas fa-plus"></i>
             </button>
           </span>
@@ -57,24 +40,7 @@
       </div>
     </div>
     <div id="keeps" class="row justify-content-start">
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/250/270" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/225/250" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/230/245" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/220/250" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/210/230" alt="">
-      </div>
-      <div class="col-md-2 col-4 px-md-4 mb-3">
-        <img src="http://www.fillmurray.com/200/225" alt="">
-      </div>
+      <KeepCard v-for="k in state.keeps" :key="k.id" :card-prop="k" />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
@@ -89,19 +55,56 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { vaultsService } from '../services/VaultsService'
+import { keepsService } from '../services/KeepsService'
+import { accountService } from '../services/AccountService'
+import Notification from '../utils/Notification'
+import { useRoute } from 'vue-router'
+
 export default {
   name: 'Profile',
   setup() {
+    const route = useRoute()
     const state = reactive({
-      // NOTE loading should equal TRUE to start, fix before run
-      loading: false,
-      profile: computed(() => AppState.profile)
+      loading: true,
+      profile: computed(() => AppState.profile),
+      keeps: computed(() => AppState.keeps),
+      vaults: computed(() => AppState.vaults)
     })
-    onMounted(() => {
-
+    onMounted(async() => {
+      try {
+        await accountService.getProfile(route.params.id)
+        await keepsService.getProfileKeeps(route.params.id)
+        await vaultsService.getProfileVaults(route.params.id)
+        state.loading = false
+      } catch (error) {
+        Notification.toast('Error: ' + error, 'error')
+      }
     })
     return {
-      state
+      route,
+      state,
+      async createVault() {
+        try {
+          await Notification.multiModal('Vault')
+          await Notification.isPrivate()
+          await vaultsService.createVault()
+          Notification.toast(`Your new Vault, ${AppState.newVault.name}, was created!`, 'success')
+          await vaultsService.getProfileVaults(route.params.id)
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      },
+      async createKeep() {
+        try {
+          await Notification.multiModal('Keep')
+          await keepsService.createKeep()
+          Notification.toast(`Your new Keep, ${AppState.newKeep.name}, was created!`, 'success')
+          await keepsService.getProfileKeeps(route.params.id)
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      }
     }
   }
 }
@@ -120,5 +123,21 @@ h3{
 }
 h4{
   font-size: 2.5rem;
+}
+h5{
+  font-size: 2rem;
+}
+.text-overlay{
+  position: absolute;
+  left: 13px;
+  bottom: 0px;
+  color: var(--light);
+  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+}
+.btn-overlay{
+  position: absolute;
+  right: 3px;
+  top: -3px;
+  font-size: 2rem;
 }
 </style>
