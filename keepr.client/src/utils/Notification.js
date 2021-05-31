@@ -1,4 +1,5 @@
 import Swal from 'sweetalert2'
+import { AppState } from '../AppState'
 
 export default class Notification {
   /**
@@ -49,6 +50,57 @@ export default class Notification {
       timerProgressBar: progressBar,
       toast: true,
       showConfirmButton: false
+    })
+  }
+
+  static async multiModal() {
+    await Swal.mixin({
+      title: 'Create a New Vault',
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      progressSteps: [1, 2, 3, 4]
+    }).queue([
+      {
+        title: 'What shall we name your Vault?',
+        icon: 'question',
+        text: 'Name...'
+      },
+      {
+        title: 'Give your Vault a brief description',
+        icon: 'info',
+        input: 'textarea',
+        inputLabel: 'Description',
+        inputPlaceholder: 'Description...',
+        inputAttributes: {
+          'aria-label': 'Vault Description'
+        }
+      },
+      {
+        title: 'Should this Vault be public or private?',
+        icon: 'question',
+        input: 'select',
+        showDenyButton: true,
+        confirmButtonText: 'Public',
+        denyButtonText: 'Private'
+      },
+      {
+        title: 'Add an image to your Vault',
+        icon: 'info',
+        text: "We'll provide a placeholder by default..."
+      }
+    ]).then((result) => {
+      if (result.value) {
+        AppState.newVault.name = result.value[0]
+        AppState.newVault.description = result.value[1]
+        if (result.isConfirmed) {
+          AppState.newVault.isPrivate = false
+        } else if (result.isDenied) {
+          AppState.newVault.isPrivate = true
+        }
+        if (result.value[3] !== '') {
+          AppState.newVault.img = result.value[3]
+        }
+      }
     })
   }
 }

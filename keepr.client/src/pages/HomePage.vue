@@ -1,42 +1,7 @@
 <template>
   <div class="home container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
     <div class="row justify-content-center">
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/250/300" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/100/100" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/150/250" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/80/80" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/200/300" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/70/70" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/250/250" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/60/60" alt="">
-        </div>
-      </div>
+      <KeepComponent v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
@@ -51,15 +16,26 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { keepsService } from '../services/KeepsService'
+import Notification from '../utils/Notification'
+
 export default {
   name: 'Home',
   setup() {
     const state = reactive({
-      loading: false,
-      account: computed(() => AppState.account)
+      loading: true,
+      account: computed(() => AppState.account),
+      keeps: computed(() => AppState.keeps),
+      activeKeep: computed(() => AppState.activeKeep)
     })
-    onMounted(() => {
-
+    onMounted(async() => {
+      state.activeKeep = null
+      try {
+        await keepsService.getKeeps()
+        state.loading = false
+      } catch (error) {
+        Notification.toast('Error: ' + error, 'error')
+      }
     })
     return {
       state
@@ -69,20 +45,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-img{
-  border-radius: 15px;
-}
-.text-overlay{
-  position: absolute;
-  left: 13px;
-  bottom: 0px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-}
-.icon-overlay{
-  position: absolute;
-  right: 13px;
-  bottom: 10px;
-  height: 2rem;
-  width: 2rem
-}
+
 </style>
