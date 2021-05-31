@@ -41,5 +41,23 @@ namespace keepr.server.Controllers
                 return BadRequest(error.Message);
             }
         }
+
+        [HttpPut]
+        public async Task<ActionResult<Account>> Update([FromBody] Account edit)
+        {
+            try
+            {
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                Account currentUser = _service.GetOrCreateAccount(userInfo);
+                edit.Email = currentUser.Email;
+                edit.Id = currentUser.Id;
+                Account update = _service.Edit(edit, currentUser);
+                return Ok(update);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

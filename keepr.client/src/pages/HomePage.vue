@@ -1,6 +1,6 @@
 <template>
-  <div class="home container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
-    <div class="row justify-content-center">
+  <div class="home container-fluid pt-md-5 pt-4 pb-md-4 pb-2 px-md-5 px-3" v-if="!state.loading">
+    <div class="card-columns pt-md-2">
       <Keep v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>
   </div>
@@ -44,5 +44,43 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@media (min-width: 0) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
 
+@media (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 992px) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
 </style>

@@ -34,7 +34,7 @@
               <h2 class="modal-title">
                 <u>{{ state.activeKeep.name }}</u>
               </h2>
-              <p>{{ state.activeKeep.description }}</p>
+              <h3>{{ state.activeKeep.description }}</h3>
             </div>
             <div class="modal-footer row justify-content-between">
               <div class="col-md-5 col-4">
@@ -117,10 +117,6 @@ export default {
 img{
   border-radius: 35px;
 }
-p {
-  font-size: 1.5rem;
-  margin-bottom: 100px;
-}
 .close{
   position: absolute;
   right: 30px;
@@ -135,6 +131,9 @@ p {
   right: 35px;
   top: 10px;
   font-size: 2.5rem;
+}
+.modal-body {
+  margin-bottom: 100px;
 }
 .modal-footer {
   position: absolute;

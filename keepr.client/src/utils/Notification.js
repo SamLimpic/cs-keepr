@@ -1,3 +1,4 @@
+/* eslint-disable vue/one-component-per-file */
 import Swal from 'sweetalert2'
 import { AppState } from '../AppState'
 
@@ -78,7 +79,7 @@ export default class Notification {
       {
         title: `Add an image to your ${str}`,
         icon: 'info',
-        input: 'text',
+        input: 'url',
         inputPlaceholder: 'Img Url...',
         text: "We'll provide a placeholder by default..."
       }
@@ -98,7 +99,7 @@ export default class Notification {
         item.name = result.value[0]
         item.description = result.value[1]
         if (result.value[2] === '') {
-          item.img = 'http://www.fillmurray.com//300/300'
+          item.img = 'http://www.fillmurray.com/300/300'
         } else {
           item.img = result.value[2]
         }
@@ -118,6 +119,32 @@ export default class Notification {
         AppState.newVault.isPrivate = false
       } else if (result.isDenied) {
         AppState.newVault.isPrivate = false
+      }
+    })
+  }
+
+  static async editAccount() {
+    await Swal.mixin({
+      title: 'Edit your Profile Info',
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      progressSteps: [1, 2]
+    }).queue([
+      {
+        title: 'Update your Profile Name',
+        icon: 'info',
+        inputPlaceholder: 'Name...'
+      },
+      {
+        title: 'Update your Profile Image',
+        icon: 'info',
+        input: 'url',
+        inputPlaceholder: 'Img Url...'
+      }
+    ]).then((result) => {
+      if (result.value) {
+        AppState.account.name = result.value[0]
+        AppState.account.picture = result.value[1]
       }
     })
   }

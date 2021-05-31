@@ -1,12 +1,18 @@
 <template>
-  <div class="col-md-3 col-6 p-md-4 p-2">
+  <div class="card px-md-2 px-2 pb-md-3 pb-3">
     <div class="position-relative">
-      <img class="w-100" :src="keepProp.img" data-toggle="modal" data-target="#keepModal" @click="setActiveKeep(keepProp.id)">
-      <h2 class="text-overlay text-light">
+      <img class="w-100 box-shadow"
+           :src="keepProp.img"
+           alt="Keep Image"
+           data-toggle="modal"
+           data-target="#keepModal"
+           @click="setActiveKeep(keepProp.id)"
+      >
+      <h2 class="text-overlay text-shadow text-light font-lg">
         {{ keepProp.name }}
       </h2>
       <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
-        <img class="icon-overlay" :src="keepProp.creator.picture" @click="goToProfile">
+        <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" @click="goToProfile">
       </router-link>
     </div>
   </div>
@@ -45,17 +51,24 @@ img{
   border-radius: 15px;
   cursor: pointer;
 }
+.box-shadow {
+  box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -moz-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -webkit-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -o-box-shadow: 7.5px 7.5px 15px  var(--dark);
+}
+.card {
+  background: transparent;
+  border: none;
+}
 .text-overlay{
   position: absolute;
   left: 13px;
   bottom: 0px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
 }
 .icon-overlay{
   position: absolute;
   right: 13px;
-  bottom: 10px;
-  height: 2rem;
-  width: 2rem
+  top: 10px;
 }
 </style>

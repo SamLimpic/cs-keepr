@@ -1,11 +1,11 @@
 <template>
-  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, state.activeKeep)">
+  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, state.activeKeep)" v-if="state.contains === false">
     {{ vaultProp.name }}
   </li>
 </template>
 
 <script>
-import { computed, reactive } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
 import Notification from '../utils/Notification'
@@ -18,9 +18,22 @@ export default {
       required: true
     }
   },
-  setup() {
+  setup(props) {
     const state = reactive({
+      contains: false,
       activeKeep: computed(() => AppState.activeKeep)
+    })
+    onMounted(async() => {
+      try {
+        await vaultsService.getVaultKeeps(props.vaultProp.id)
+        AppState.vaultKeeps.forEach(vk => {
+          if (vk.vaultId === props.vaultProp.id && vk.keepId === state.activeKeep.id) {
+            state.contains = true
+          }
+        })
+      } catch (error) {
+        Notification.toast('Error: ' + error, 'error')
+      }
     })
     return {
       state,

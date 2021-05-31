@@ -16,6 +16,12 @@ class AccountService {
     const res = await api.get(`api/profiles/${id}`)
     AppState.profile = res.data
   }
+
+  async editAccount(edit) {
+    const res = await api.put('/account', edit)
+    AppState.account = res.data
+    AppState.profile = res.data
+  }
 }
 
 export const accountService = new AccountService()

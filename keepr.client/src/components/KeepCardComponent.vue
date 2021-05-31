@@ -1,10 +1,10 @@
 <template>
-  <div class="col-md-2 col-6 p-2">
+  <div class="card px-md-2 px-1 pb-md-4 pb-2">
     <div class="position-relative" data-toggle="modal" data-target="#keepModal" @click="setActiveKeep(cardProp.id)">
-      <img class="w-100" :src="cardProp.img">
-      <h2 class="text-overlay text-light">
+      <img class="w-100 box-shadow" alt="Keep Image" :src="cardProp.img">
+      <h4 class="text-overlay text-shadow text-light font-lg">
         {{ cardProp.name }}
-      </h2>
+      </h4>
     </div>
     <Modal />
   </div>
@@ -37,8 +37,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-h2 {
-  font-size: 1.5rem;
+.box-shadow {
+  box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -moz-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -webkit-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  -o-box-shadow: 7.5px 7.5px 15px  var(--dark);
 }
 img{
   border-radius: 15px;
@@ -48,11 +51,5 @@ img{
   position: absolute;
   left: 13px;
   bottom: 0px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
-}
-.img-card {
-  object-fit: cover;
-  height: auto;
-  position: center;
 }
 </style>

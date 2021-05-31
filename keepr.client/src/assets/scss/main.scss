@@ -25,19 +25,152 @@ main {
   display: flex;
   align-items: stretch;
 }
+.text-shadow {
+  text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000,
+    0.5px 0.5px 0 #000;
+}
 
-.font-xs {
-  font-size: 1rem;
+@media (min-width: 0) {
+  .font-xs {
+    font-size: 0.5rem;
+  }
+  .font-sm {
+    font-size: 0.75rem;
+  }
+  .font-md {
+    font-size: 1rem;
+  }
+  .font-lg {
+    font-size: 1.5rem;
+  }
+  .font-xl {
+    font-size: 2em;
+  }
+  .font-xxl {
+    font-size: 3em;
+  }
+  .text-shadow {
+    text-shadow: -0.75px -0.75px 0 #000, 0.75px -0.75px 0 #000,
+      -0.75px 0.75px 0 #000, 0.75px 0.75px 0 #000;
+  }
+  .icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
 }
-.font-sm {
-  font-size: 2rem;
+
+@media (min-width: 576px) {
+  .font-xs {
+    font-size: 0.75rem;
+  }
+  .font-sm {
+    font-size: 1rem;
+  }
+  .font-md {
+    font-size: 1.25rem;
+  }
+  .font-lg {
+    font-size: 1.75rem;
+  }
+  .font-xl {
+    font-size: 2.25em;
+  }
+  .font-xxl {
+    font-size: 3.5em;
+  }
+  .text-shadow {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+      1px 1px 0 #000;
+  }
+  .icon {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
 }
-.font-md {
-  font-size: 3rem;
+
+@media (min-width: 768px) {
+  .font-xs {
+    font-size: 1rem;
+  }
+  .font-sm {
+    font-size: 1.25rem;
+  }
+  .font-md {
+    font-size: 1.5rem;
+  }
+  .font-lg {
+    font-size: 2rem;
+  }
+  .font-xl {
+    font-size: 2.5em;
+  }
+  .font-xxl {
+    font-size: 4em;
+  }
+  .text-shadow {
+    text-shadow: -1.25px -1.25px 0 #000, 1.25px -1.25px 0 #000,
+      -1.25px 1.25px 0 #000, 1.25px 1.25px 0 #000;
+  }
+  .icon {
+    height: 2rem;
+    width: 2rem;
+  }
 }
-.font-lg {
-  font-size: 4rem;
+
+@media (min-width: 992px) {
+  .font-xs {
+    font-size: 1.25rem;
+  }
+  .font-sm {
+    font-size: 1.5rem;
+  }
+  .font-md {
+    font-size: 1.75rem;
+  }
+  .font-lg {
+    font-size: 2.25rem;
+  }
+  .font-xl {
+    font-size: 2.75em;
+  }
+  .font-xxl {
+    font-size: 4.5em;
+  }
+  .text-shadow {
+    text-shadow: -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000,
+      1.5px 1.5px 0 #000;
+  }
+  .icon {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
 }
-.font-xl {
-  font-size: 5rem;
+
+@media (min-width: 1200px) {
+  .font-xs {
+    font-size: 1.5rem;
+  }
+  .font-sm {
+    font-size: 1.75rem;
+  }
+  .font-md {
+    font-size: 2rem;
+  }
+  .font-lg {
+    font-size: 2.5rem;
+  }
+  .font-xl {
+    font-size: 3em;
+  }
+  .font-xxl {
+    font-size: 5em;
+  }
+  .text-shadow {
+    text-shadow: -1.75px -1.75px 0 #000, 1.75px -1.75px 0 #000,
+      -1.75px 1.75px 0 #000, 1.75px 1.75px 0 #000;
+  }
+  .icon {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
 }

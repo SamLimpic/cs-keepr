@@ -34,9 +34,8 @@ namespace keepr.server.Services
 
 
 
-        public Account Edit(Account edit, string id)
+        public Account Edit(Account edit, Account original)
         {
-            Account original = _repo.GetById(id);
             original.Name = edit.Name.Length > 0 ? edit.Name : original.Name;
             original.Picture = edit.Picture.Length > 0 ? edit.Picture : original.Picture;
             return _repo.Edit(original);

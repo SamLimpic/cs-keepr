@@ -2,51 +2,58 @@
   <div class="profile container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
     <div id="profile-info" class="row justify-content-center">
       <div class="col-md-2 col-5 pt-md-4 pt-3">
+        <button type="button" class="btn btn-outline-info btn-overlay font-lg" aria-label="Edit Profile" @click="editProfile" v-if="state.profile.id === state.account.id">
+          <i class="fas fa-edit"></i>
+        </button>
         <img class="rounded-circle" :src="state.profile.picture" alt="" />
       </div>
       <div class="col-md-10 col-7 pt-md-5">
-        <h2>
-          {{ state.profile.name.split('@')[0] }}
+        <h2 class="font-xxl">
+          <u>{{ state.profile.name.split('@')[0] }}</u>
         </h2>
-        <h3>Vaults: {{ state.vaults.length }}</h3>
-        <h3>Keeps: {{ state.keeps.length }}</h3>
+        <h3 class="font-lg">
+          Vaults: {{ state.vaults.length }}
+        </h3>
+        <h3 class="font-lg">
+          Keeps: {{ state.keeps.length }}
+        </h3>
       </div>
     </div>
     <div id="add-vault" class="row justify-content-start pt-md-5 pt-3 pl-2">
       <div class="col">
-        <h4>
-          Vaults
+        <h4 class="font-xl">
+          <u>Vaults</u>
           <span>
-            <button type="button" label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-sm py-0 px-2 ml-3" @click="createVault">
+            <button type="button" aria-label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-lg py-0 px-2 ml-3" @click="createVault" v-if="state.profile.id === state.account.id">
               <i class="fas fa-plus"></i>
             </button>
           </span>
         </h4>
       </div>
     </div>
-    <div id="vaults" class="row justify-content-start">
+    <div id="vaults" class="card-columns">
       <VaultCard v-for="v in state.vaults" :key="v.id" :card-prop="v" />
     </div>
-    <div id="add-keep" class="row justify-content-start pt-5 pl-2">
+    <div id="add-keep" class="row justify-content-start pt-md-4 pt-3 pl-2">
       <div class="col">
-        <h4>
-          Keeps
+        <h4 class="font-xl">
+          <u>Keeps</u>
           <span>
-            <button type="button" label="Add Keep" class="btn btn-outline-info bg-transparent border-0 font-sm py-0 px-2 ml-3" @click="createKeep">
+            <button type="button" aria-label="Add Keep" class="btn btn-outline-info bg-transparent border-0 font-lg py-0 px-2 ml-3" @click="createKeep" v-if="state.profile.id === state.account.id">
               <i class="fas fa-plus"></i>
             </button>
           </span>
         </h4>
       </div>
     </div>
-    <div id="keeps" class="row justify-content-start">
+    <div id="keeps" class="card-columns">
       <KeepCard v-for="k in state.keeps" :key="k.id" :card-prop="k" />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-cog text-info fa-spin font-lg"></i>
+        <i class="fas fa-cog text-info fa-spin font-xxl"></i>
       </div>
     </div>
   </div>
@@ -68,6 +75,7 @@ export default {
     const state = reactive({
       loading: true,
       profile: computed(() => AppState.profile),
+      account: computed(() => AppState.account),
       keeps: computed(() => AppState.keeps),
       vaults: computed(() => AppState.vaults)
     })
@@ -104,6 +112,11 @@ export default {
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
+      },
+      async editProfile() {
+        await Notification.editAccount()
+        await accountService.editAccount(AppState.account)
+        Notification.toast('Your profile was updated!', 'success')
       }
     }
   }
@@ -115,29 +128,57 @@ img{
   border-radius: 10px;
   width: 100%;
 }
-h2{
-  font-size: 3.5rem;
-}
-h3{
-  font-size: 2rem;
-}
-h4{
-  font-size: 2.5rem;
-}
-h5{
-  font-size: 2rem;
-}
-.text-overlay{
-  position: absolute;
-  left: 13px;
-  bottom: 0px;
-  color: var(--light);
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+.card {
+  background: transparent;
+  border: none;
 }
 .btn-overlay{
   position: absolute;
-  right: 3px;
-  top: -3px;
-  font-size: 2rem;
+  border: none;
+  background: transparent;
+  transform: scaleX(-1);
+  left: -12.5px;
+  top: -7.5px;
 }
+
+@media (min-width: 0) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 992px) {
+  .card-columns {
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-columns {
+    -webkit-column-count: 6;
+    -moz-column-count: 6;
+    column-count: 6;
+  }
+}
+
 </style>
