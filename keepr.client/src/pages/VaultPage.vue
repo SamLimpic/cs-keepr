@@ -1,58 +1,41 @@
 <template>
-  <div class="vault container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
-    <div class="row justify-content-start">
-      <div class="col pt-md-4 pt-2 px-md-4 px-2">
+  <div class="vault container-fluid pt-md-4 pb-md-4 pb-2 px-md-5 px-3" v-if="!state.loading">
+    <div class="row justify-content-start pt-2">
+      <div class="col px-4 position-relative">
+        <div class="row justify-content-start">
+          <h2 class="font-xl ml-3 mt-1">
+            <u> {{ state.activeVault.name }}</u>
+          </h2>
+          <button type="button"
+                  aria-label="Delete Vault"
+                  class="btn btn-outline-danger bg-transparent border-0 font-lg ml-md-3 ml-2"
+                  data-dismiss="modal"
+                  @click="deleteVault(state.activeVault)"
+                  v-if="state.activeVault.creatorId === state.account.id"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
         <h2 class="font-lg">
-          Vault Title
-        </h2>
-        <h2>
-          Keeps:
+          Keeps: {{ state.vaultKeeps.length }}
         </h2>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/250/300" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/100/100" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/150/250" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/80/80" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/200/300" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/70/70" alt="">
-        </div>
-      </div>
-      <div class="col-md-3 col-6 p-md-4 p-2">
-        <div class="position-relative">
-          <img class="w-100" src="http://www.fillmurray.com/250/250" alt="">
-          <h2 class="text-overlay text-light">
-            Title
-          </h2>
-          <img class="icon-overlay" src="http://www.fillmurray.com/60/60" alt="">
-        </div>
+    <div class="card-columns pt-md-2" v-if="state.vaultKeeps[0]">
+      <Keep v-for="k in state.vaultKeeps" :key="k.id" :keep-prop="k" />
+    </div>
+    <div class="row justify-content-center pt-5" v-else>
+      <div class="col text-center pt-md-4 pt-2 px-4">
+        <h3 class="font-xl">
+          <i>This Vault has no Keeps!</i>
+        </h3>
       </div>
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-cog text-info fa-spin font-lg"></i>
+        <i class="fas fa-cog text-info fa-spin font-xxl"></i>
       </div>
     </div>
   </div>
@@ -61,38 +44,88 @@
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { vaultsService } from '../services/VaultsService'
+import Notification from '../utils/Notification'
+import { useRoute } from 'vue-router'
+
 export default {
   name: 'Vault',
   setup() {
+    const route = useRoute()
     const state = reactive({
-      loading: false,
-      account: computed(() => AppState.account)
+      loading: true,
+      account: computed(() => AppState.account),
+      activeVault: computed(() => AppState.activeVault),
+      vaultKeeps: computed(() => AppState.vaultKeeps)
     })
-    onMounted(() => {
-
+    onMounted(async() => {
+      try {
+        vaultsService.setActiveVault(route.params.id)
+        await vaultsService.getVaultKeeps(route.params.id)
+        state.loading = false
+      } catch (error) {
+        Notification.toast('Error: ' + error, 'error')
+      }
     })
     return {
-      state
+      state,
+      async deleteVault(vault) {
+        try {
+          if (await Notification.confirmAction('Are you sure?', `${vault.name} will be gone for good!`, 'warning', `Delete ${vault.name}`)) {
+            await vaultsService.deleteVault(vault.id)
+            await vaultsService.getVaults(vault.id)
+            Notification.toast(`${vault.name} was deleted!`, 'error')
+          } else {
+            Notification.toast(`No worries! ${vault.name} is still here!`, 'info')
+          }
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
-img{
-  border-radius: 15px;
+
+@media (min-width: 0) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
 }
-.text-overlay{
-  position: absolute;
-  left: 13px;
-  bottom: 0px;
-  text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+
+@media (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
 }
-.icon-overlay{
-  position: absolute;
-  right: 13px;
-  bottom: 10px;
-  height: 2rem;
-  width: 2rem
+
+@media (min-width: 768px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 992px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
 }
 </style>

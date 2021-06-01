@@ -1,6 +1,6 @@
 <template>
   <div class="home container-fluid pt-md-5 pt-4 pb-md-4 pb-2 px-md-5 px-3" v-if="!state.loading">
-    <div class="card-columns pt-md-2">
+    <div class="card-columns">
       <Keep v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>
   </div>
@@ -17,6 +17,7 @@
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
+import { vaultsService } from '../services/VaultsService'
 import Notification from '../utils/Notification'
 
 export default {
@@ -31,6 +32,7 @@ export default {
     onMounted(async() => {
       try {
         await keepsService.getKeeps()
+        await vaultsService.getVaults()
         state.loading = false
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
@@ -70,9 +72,9 @@ export default {
 
 @media (min-width: 992px) {
   .card-columns {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
   }
 }
 

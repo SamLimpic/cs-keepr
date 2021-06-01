@@ -2,9 +2,9 @@ import { AppState } from '../AppState'
 import { api } from './AxiosService'
 
 class VaultsService {
-  async getMyVaults(id) {
-    const res = await api.get(`api/profiles/${id}/vaults`)
-    AppState.myVaults = res.data
+  async getVaults() {
+    const res = await api.get('api/vaults')
+    AppState.vaults = res.data
   }
 
   async getProfileVaults(id) {
@@ -15,6 +15,11 @@ class VaultsService {
   async getVaultKeeps(vaultId) {
     const res = await api.get(`api/vaults/${vaultId}/keeps`)
     AppState.vaultKeeps = res.data
+  }
+
+  async setActiveVault(vaultId) {
+    const res = await api.get(`api/vaults/${vaultId}`)
+    AppState.activeVault = res.data
   }
 
   async addToVault(vaultId, keep) {
@@ -35,10 +40,6 @@ class VaultsService {
       keepId: keep.id
     }
     await api.post('api/vaultkeeps', vaultKeep)
-  }
-
-  setActiveVault(vaultId) {
-    AppState.activeVault = AppState.vaults.find(v => v.id === vaultId)
   }
 }
 

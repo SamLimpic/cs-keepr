@@ -46,10 +46,15 @@ namespace keepr.server.Repositories
                     vault_keeps vk
                     JOIN vaults v ON v.id = vk.vaultId
                     JOIN keeps k ON k.id = vk.keepId
-                    JOIN accounts a ON vk.creatorId = a.id
+                    JOIN accounts a ON k.creatorId = a.id
                 WHERE vaultId = @id
                 ";
-            return _db.Query<VaultKeepView>(sql, new { id });
+            return _db.Query<VaultKeepView, Account, VaultKeepView>(sql, (vaultKeepView, account) =>
+           {
+               vaultKeepView.Creator = account;
+               return vaultKeepView;
+           }
+           , new { id }, splitOn: "keepId");
         }
 
 

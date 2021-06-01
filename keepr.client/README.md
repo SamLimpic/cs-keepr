@@ -4,7 +4,7 @@
 
 <!-- Keep cards are displayed in accordance to mock -->
 
-Cards follow a mansonry layout (bootstrap card columns OR masonry)
+<!-- Cards follow a mansonry layout (bootstrap card columns OR masonry) -->
 
 <!-- Clicking on a keep card opens the keep in a modal which adheres to mock -->
 
@@ -12,7 +12,7 @@ Cards follow a mansonry layout (bootstrap card columns OR masonry)
 
 <!-- The profile page adheres to mock -->
 
-Each vault has its own route where users can view all of the keeps in the vault
+<!-- Each vault has its own route where users can view all of the keeps in the vault -->
 
 <!-- On the vault page, if the vault is private and not the active users the request fails -->
 
@@ -24,11 +24,11 @@ From the vault page if the user is the creator they can remove keeps from the va
 
 <!-- Create and Delete Keeps -->
 
-Create and Delete Vaults
+<!-- Create and Delete Vaults -->
 
 <!-- Users can only Delete things they created -->
 
-All deletes require confirmation
+<!-- All deletes require confirmation -->
 
 <!-- Add keeps to vaults -->
 
@@ -40,7 +40,7 @@ All deletes require confirmation
 
 <!-- All Invalid Auth API Tests pass -->
 
-UI adheres to all phases of CodeWorks Design Requirements
+<!-- UI adheres to all phases of CodeWorks Design Requirements -->
 
 # Stretch Goals
 

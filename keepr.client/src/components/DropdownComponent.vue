@@ -1,5 +1,5 @@
 <template>
-  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, state.activeKeep)" v-if="state.contains === false">
+  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, state.activeKeep)" v-if="vaultProp.creatorId === accountProp">
     {{ vaultProp.name }}
   </li>
 </template>
@@ -16,31 +16,35 @@ export default {
     vaultProp: {
       type: Object,
       required: true
+    },
+    accountProp: {
+      type: String,
+      required: true
     }
   },
-  setup(props) {
+  setup() {
     const state = reactive({
       contains: false,
       activeKeep: computed(() => AppState.activeKeep)
     })
     onMounted(async() => {
-      try {
-        await vaultsService.getVaultKeeps(props.vaultProp.id)
-        AppState.vaultKeeps.forEach(vk => {
-          if (vk.vaultId === props.vaultProp.id && vk.keepId === state.activeKeep.id) {
-            state.contains = true
-          }
-        })
-      } catch (error) {
-        Notification.toast('Error: ' + error, 'error')
-      }
+
     })
     return {
       state,
       async addToVault(vault, keep) {
         try {
-          await vaultsService.addToVault(vault.id, keep)
-          Notification.toast(`Added ${keep.name} to ${vault.name}!`, 'success')
+          await vaultsService.getVaultKeeps(vault.id)
+          AppState.vaultKeeps.forEach(vk => {
+            if (vk.keepId === keep.id) {
+              Notification.toast(`${keep.name} was already added to ${vault.name}!`, 'error')
+              state.contains = true
+            }
+          })
+          if (state.contains === false) {
+            await vaultsService.addToVault(vault.id, keep)
+            Notification.toast(`Added ${keep.name} to ${vault.name}!`, 'success')
+          }
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }

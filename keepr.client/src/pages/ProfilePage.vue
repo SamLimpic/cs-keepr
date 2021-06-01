@@ -2,7 +2,7 @@
   <div class="profile container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
     <div id="profile-info" class="row justify-content-center">
       <div class="col-md-2 col-5 pt-md-4 pt-3">
-        <button type="button" class="btn btn-outline-info btn-overlay font-lg" aria-label="Edit Profile" @click="editProfile" v-if="state.profile.id === state.account.id">
+        <button type="button" class="btn btn-outline-info btn-overlay font-md" aria-label="Edit Profile" @click="editProfile" v-if="state.profile.id === state.account.id">
           <i class="fas fa-edit"></i>
         </button>
         <img class="rounded-circle" :src="state.profile.picture" alt="" />
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div id="vaults" class="card-columns">
-      <VaultCard v-for="v in state.vaults" :key="v.id" :card-prop="v" />
+      <VaultCard v-for="v in state.vaults" :key="v.id" :card-prop="v" :profile-prop="route.params.id" />
     </div>
     <div id="add-keep" class="row justify-content-start pt-md-4 pt-3 pl-2">
       <div class="col">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div id="keeps" class="card-columns">
-      <KeepCard v-for="k in state.keeps" :key="k.id" :card-prop="k" />
+      <KeepCard v-for="k in state.keeps" :key="k.id" :card-prop="k" :profile-prop="route.params.id" />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
@@ -137,8 +137,8 @@ img{
   border: none;
   background: transparent;
   transform: scaleX(-1);
-  left: -12.5px;
-  top: -7.5px;
+  left: -10px;
+  top: -5px;
 }
 
 @media (min-width: 0) {

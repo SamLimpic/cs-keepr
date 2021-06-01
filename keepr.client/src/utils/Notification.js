@@ -79,7 +79,7 @@ export default class Notification {
       {
         title: `Add an image to your ${str}`,
         icon: 'info',
-        input: 'url',
+        input: 'text',
         inputPlaceholder: 'Img Url...',
         text: "We'll provide a placeholder by default..."
       }
@@ -138,7 +138,7 @@ export default class Notification {
       {
         title: 'Update your Profile Image',
         icon: 'info',
-        input: 'url',
+        input: 'text',
         inputPlaceholder: 'Img Url...'
       }
     ]).then((result) => {

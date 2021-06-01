@@ -10,7 +10,13 @@
       <div class="modal-content">
         <div class="row justify-content-center">
           <div class="col-md-6 col-12 order-md-1 order-2 position-relative">
-            <button type="button" label="Delete" class="btn btn-outline-danger bg-transparent border-0 btn-overlay" @click="deleteKeep(state.activeKeep)" v-if="state.activeKeep.creatorId === state.account.id">
+            <button type="button"
+                    aria-label="Delete Keep"
+                    class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
+                    data-dismiss="modal"
+                    @click="deleteKeep(state.activeKeep)"
+                    v-if="state.activeKeep.creatorId === state.account.id"
+            >
               <i class="fas fa-times"></i>
             </button>
             <img class="w-100 p-3" :src="state.activeKeep.img" alt="">
@@ -27,7 +33,7 @@
                 <h4><span><i class="fas fa-share-alt text-primary pr-3"></i></span>{{ state.activeKeep.shares }}</h4>
               </div>
             </div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal">
               <span class="text-danger" aria-hidden="true"><i class="fas fa-times"></i></span>
             </button>
             <div class="modal-body">
@@ -39,11 +45,17 @@
             <div class="modal-footer row justify-content-between">
               <div class="col-md-5 col-4">
                 <div class="btn-group dropup">
-                  <button type="button" class="btn btn-lg btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button type="button"
+                          class="btn btn-lg btn-outline-primary dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-label="Dropdown Vault List"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                  >
                     Add to Vault
                   </button>
                   <div class="dropdown-menu">
-                    <Dropdown v-for="v in state.myVaults" :key="v.id" :vault-prop="v" />
+                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :account-prop="state.account.id" />
                     <div class="dropdown-divider"></div>
                     <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
                       Add to New Vault
@@ -78,8 +90,7 @@ export default {
   setup() {
     const state = reactive({
       account: computed(() => AppState.account),
-      activeKeep: computed(() => AppState.activeKeep),
-      myVaults: computed(() => AppState.myVaults)
+      activeKeep: computed(() => AppState.activeKeep)
     })
     return {
       state,
@@ -97,8 +108,7 @@ export default {
         try {
           if (await Notification.confirmAction('Are you sure?', `${keep.name} will be gone for good!`, 'warning', `Delete ${keep.name}`)) {
             await keepsService.deleteKeep(keep.id)
-            AppState.activeKeep = {}
-            location.reload()
+            await keepsService.getKeeps(keep.id)
             Notification.toast(`${keep.name} was deleted!`, 'error')
           } else {
             Notification.toast(`No worries! ${keep.name} is still here!`, 'info')

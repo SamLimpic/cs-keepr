@@ -1,5 +1,5 @@
 <template>
-  <div class="card px-md-2 px-1 pb-md-4 pb-2">
+  <div class="card px-md-2 px-1 pb-md-4 pb-2" v-if="cardProp.creatorId === profileProp">
     <div class="position-relative" data-toggle="modal" data-target="#keepModal" @click="setActiveKeep(cardProp.id)">
       <img class="w-100 box-shadow" alt="Keep Image" :src="cardProp.img">
       <h4 class="text-overlay text-shadow text-light font-lg">
@@ -18,6 +18,10 @@ export default {
   props: {
     cardProp: {
       type: Object,
+      required: true
+    },
+    profileProp: {
+      type: String,
       required: true
     }
   },

@@ -11,15 +11,26 @@
       <h2 class="text-overlay text-shadow text-light font-lg">
         {{ keepProp.name }}
       </h2>
-      <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
+      <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}" v-if="keepProp.creator.picture !== null">
         <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" @click="goToProfile">
       </router-link>
+      <!-- <button type="button"
+              aria-label="Remove Keep from Vault"
+              class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
+              data-dismiss="modal"
+              @click="deleteKeep(state.activeKeep)"
+              v-if="AppState.vaultKeeps[0] && AppState.activeVault.id === AppState.vaultKeeps[0].vaultId"
+      >
+        <i class="fas fa-times"></i>
+      </button> -->
     </div>
   </div>
   <Modal />
 </template>
 
 <script>
+import { computed, reactive } from 'vue'
+import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import Notification from '../utils/Notification'
 
@@ -32,7 +43,12 @@ export default {
     }
   },
   setup() {
+    const state = reactive({
+      activeVault: computed(() => AppState.activeVault),
+      vaultKeeps: computed(() => AppState.vaultKeeps)
+    })
     return {
+      state,
       setActiveKeep(id) {
         try {
           keepsService.setActiveKeep(id)
@@ -68,7 +84,7 @@ img{
 }
 .icon-overlay{
   position: absolute;
-  right: 13px;
+  left: 10px;
   top: 10px;
 }
 </style>

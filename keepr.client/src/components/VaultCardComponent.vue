@@ -1,5 +1,5 @@
 <template>
-  <div class="card px-md-2 px-1 pb-md-4 pb-2">
+  <div class="card px-md-2 px-1 pb-md-4 pb-2" v-if="cardProp.creatorId === profileProp">
     <router-link :to="{name: 'Vault', params: {id: cardProp.id}}">
       <div class="position-relative">
         <img class="w-100 box-shadow" alt="Vault Image" :src="cardProp.img">
@@ -18,6 +18,10 @@ export default {
   props: {
     cardProp: {
       type: Object,
+      required: true
+    },
+    profileProp: {
+      type: String,
       required: true
     }
   },
