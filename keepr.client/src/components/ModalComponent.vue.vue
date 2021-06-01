@@ -4,7 +4,6 @@
        tabindex="-1"
        aria-labelledby="keepModalLabel"
        aria-hidden="true"
-       v-if="state.activeKeep.name !== undefined"
   >
     <div class="modal-dialog modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
       <div class="modal-content">
@@ -14,23 +13,23 @@
                     aria-label="Delete Keep"
                     class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
                     data-dismiss="modal"
-                    @click="deleteKeep(state.activeKeep)"
-                    v-if="state.activeKeep.creatorId === state.account.id"
+                    @click="deleteKeep(keepProp)"
+                    v-if="keepProp.creatorId === state.account.id"
             >
-              <i class="fas fa-times"></i>
+              <i class="fas fa-minus-circle font-lg"></i>
             </button>
-            <img class="w-100 p-3" :src="state.activeKeep.img" alt="">
+            <img class="w-100 p-3" :src="keepProp.img" alt="">
           </div>
           <div class="col-md-6 col-12 order-md-2 order-1 position-relative">
             <div class="modal-header row justify-content-center position-relative pt-5">
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="far fa-eye text-primary pr-3"></i></span>{{ state.activeKeep.views }}</h4>
+                <h4><span><i class="far fa-eye text-primary pr-3"></i></span>{{ keepProp.views }}</h4>
               </div>
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="fab fa-kaggle text-primary pr-3"></i></span>{{ state.activeKeep.keeps }}</h4>
+                <h4><span><i class="fab fa-kaggle text-primary pr-3"></i></span>{{ keepProp.keeps }}</h4>
               </div>
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="fas fa-share-alt text-primary pr-3"></i></span>{{ state.activeKeep.shares }}</h4>
+                <h4><span><i class="fas fa-share-alt text-primary pr-3"></i></span>{{ keepProp.shares }}</h4>
               </div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal">
@@ -38,9 +37,9 @@
             </button>
             <div class="modal-body">
               <h2 class="modal-title">
-                <u>{{ state.activeKeep.name }}</u>
+                <u>{{ keepProp.name }}</u>
               </h2>
-              <h3>{{ state.activeKeep.description }}</h3>
+              <h3>{{ keepProp.description }}</h3>
             </div>
             <div class="modal-footer row justify-content-between">
               <div class="col-md-5 col-4">
@@ -54,19 +53,19 @@
                   >
                     Add to Vault
                   </button>
-                  <div class="dropdown-menu">
-                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :account-prop="state.account.id" />
+                  <div class="dropdown-menu" v-if="state.account.id !== undefined">
+                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="keepProp" />
                     <div class="dropdown-divider"></div>
-                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
+                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(keepProp)">
                       Add to New Vault
                     </li>
                   </div>
                 </div>
               </div>
               <div class="col-md-5 col-6">
-                <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
-                  <h4 class="p-0 m-0" data-dismiss="modal">
-                    <span><img class="rounded-circle icon mr-3" :src="state.activeKeep.creator.picture" alt="" /></span>{{ state.activeKeep.creator.name.split('@')[0] }}
+                <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
+                  <h4 class="p-0 m-0" data-dismiss="modal" v-if="keepProp.creator.picture !== null">
+                    <span><img class="rounded-circle icon mr-3" :src="keepProp.creator.picture" alt="" /></span>{{ keepProp.creator.name.split('@')[0] }}
                   </h4>
                 </router-link>
               </div>
@@ -87,9 +86,16 @@ import Notification from '../utils/Notification'
 
 export default {
   name: 'Modal',
+  props: {
+    keepProp: {
+      type: Object,
+      required: true
+    }
+  },
   setup() {
     const state = reactive({
       account: computed(() => AppState.account),
+      vaults: computed(() => AppState.vaults),
       activeKeep: computed(() => AppState.activeKeep)
     })
     return {

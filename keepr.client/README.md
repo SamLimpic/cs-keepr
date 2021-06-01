@@ -16,7 +16,7 @@
 
 <!-- On the vault page, if the vault is private and not the active users the request fails -->
 
-From the vault page if the user is the creator they can remove keeps from the vault
+<!-- From the vault page if the user is the creator they can remove keeps from the vault -->
 
 <!-- Anytime a keep is kept in a vault the keep count is incremented -->
 

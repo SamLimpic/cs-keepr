@@ -1,5 +1,5 @@
 <template>
-  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, state.activeKeep)" v-if="vaultProp.creatorId === accountProp">
+  <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, keepProp)" v-if="vaultProp.creatorId === state.account.id">
     {{ vaultProp.name }}
   </li>
 </template>
@@ -17,14 +17,15 @@ export default {
       type: Object,
       required: true
     },
-    accountProp: {
-      type: String,
+    keepProp: {
+      type: Object,
       required: true
     }
   },
   setup() {
     const state = reactive({
       contains: false,
+      account: computed(() => AppState.account),
       activeKeep: computed(() => AppState.activeKeep)
     })
     onMounted(async() => {

@@ -14,24 +14,25 @@
       <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}" v-if="keepProp.creator.picture !== null">
         <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" @click="goToProfile">
       </router-link>
-      <!-- <button type="button"
+      <button type="button"
               aria-label="Remove Keep from Vault"
               class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
               data-dismiss="modal"
-              @click="deleteKeep(state.activeKeep)"
-              v-if="AppState.vaultKeeps[0] && AppState.activeVault.id === AppState.vaultKeeps[0].vaultId"
+              @click="removeFromVault(vaultKeepProp)"
+              v-if="vaultKeepProp && state.activeVault.creatorId === state.account.id"
       >
-        <i class="fas fa-times"></i>
-      </button> -->
+        <i class="fas fa-minus-circle font-lg"></i>
+      </button>
     </div>
   </div>
-  <Modal />
+  <Modal :keep-prop="keepProp" v-if="keepProp.creatorId !== undefined" />
 </template>
 
 <script>
 import { computed, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
+import { vaultsService } from '../services/VaultsService'
 import Notification from '../utils/Notification'
 
 export default {
@@ -40,10 +41,16 @@ export default {
     keepProp: {
       type: Object,
       required: true
+    },
+    // eslint-disable-next-line vue/require-default-prop
+    vaultKeepProp: {
+      type: Object,
+      required: false
     }
   },
   setup() {
     const state = reactive({
+      account: computed(() => AppState.account),
       activeVault: computed(() => AppState.activeVault),
       vaultKeeps: computed(() => AppState.vaultKeeps)
     })
@@ -52,6 +59,19 @@ export default {
       setActiveKeep(id) {
         try {
           keepsService.setActiveKeep(id)
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      },
+      async removeFromVault(vaultKeep) {
+        try {
+          if (await Notification.confirmAction('Are you sure?', `Do you want to remove ${vaultKeep.name} from this Vault?`, 'warning', `Delete ${vaultKeep.name}`)) {
+            await vaultsService.removeFromVault(vaultKeep.id)
+            await vaultsService.getVaultKeeps(vaultKeep.vaultId)
+            Notification.toast(`${vaultKeep.name} was deleted!`, 'error')
+          } else {
+            Notification.toast(`No worries! ${vaultKeep.name} is still here!`, 'info')
+          }
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
@@ -86,5 +106,10 @@ img{
   position: absolute;
   left: 10px;
   top: 10px;
+}
+.btn-overlay{
+  position: absolute;
+  right: 0px;
+  top: 5px;
 }
 </style>

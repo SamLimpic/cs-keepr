@@ -6,7 +6,7 @@
         {{ cardProp.name }}
       </h4>
     </div>
-    <Modal />
+    <Modal :keep-prop="cardProp" />
   </div>
 </template>
 

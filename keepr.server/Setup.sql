@@ -43,3 +43,14 @@ CREATE TABLE IF NOT EXISTS vault_keeps (
   FOREIGN KEY (vaultId) REFERENCES vaults(id) ON DELETE CASCADE,
   FOREIGN KEY (keepId) REFERENCES keeps(id) ON DELETE CASCADE
 );
+SELECT
+  k.*,
+  vk.id as vaultKeepId,
+  vk.vaultId,
+  vk.keepId
+FROM
+  vault_keeps vk
+  JOIN keeps k ON k.id = vk.keepId
+  JOIN accounts a ON k.creatorId = a.id
+WHERE
+  vaultId = 149

@@ -33,28 +33,28 @@ namespace keepr.server.Repositories
 
 
 
-        public IEnumerable<VaultKeepView> GetVaultKeeps(int id)
+        public IEnumerable<VaultKeepView> GetVaultKeeps(int vaultId)
         {
             string sql = @"
                 SELECT
                     k.*,
-                    v.name as vault,
-                    v.id as vaultKeepId,
+                    vk.id as vaultKeepId,
                     vk.vaultId,
-                    vk.keepId
+                    vk.keepId,
+                    a.*
                 FROM 
                     vault_keeps vk
-                    JOIN vaults v ON v.id = vk.vaultId
                     JOIN keeps k ON k.id = vk.keepId
                     JOIN accounts a ON k.creatorId = a.id
-                WHERE vaultId = @id
+                WHERE vaultId = @vaultId
                 ";
+            // return _db.Query<VaultKeepView>(sql, new { vaultId });
             return _db.Query<VaultKeepView, Account, VaultKeepView>(sql, (vaultKeepView, account) =>
            {
                vaultKeepView.Creator = account;
                return vaultKeepView;
            }
-           , new { id }, splitOn: "keepId");
+           , new { vaultId }, splitOn: "id");
         }
 
 

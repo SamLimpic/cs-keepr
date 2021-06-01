@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="card-columns pt-md-2" v-if="state.vaultKeeps[0]">
-      <Keep v-for="k in state.vaultKeeps" :key="k.id" :keep-prop="k" />
+      <Keep v-for="(k, index) in state.vaultKeeps" :key="k.keepId" :keep-prop="k" :vault-keep-prop="state.vaultKeeps[index]" />
     </div>
     <div class="row justify-content-center pt-5" v-else>
       <div class="col text-center pt-md-4 pt-2 px-4">
@@ -63,6 +63,7 @@ export default {
         vaultsService.setActiveVault(route.params.id)
         await vaultsService.getVaultKeeps(route.params.id)
         state.loading = false
+        console.log(state.vaultKeeps)
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
       }
