@@ -11,12 +11,12 @@
       <h2 class="text-overlay text-shadow text-light font-lg">
         {{ keepProp.name }}
       </h2>
-      <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}" v-if="keepProp.creator.picture !== null">
+      <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
         <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" @click="goToProfile">
       </router-link>
       <button type="button"
               aria-label="Remove Keep from Vault"
-              class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
+              class="btn btn-outline-danger bg-transparent border-0 p-0 m-0 btn-overlay"
               data-dismiss="modal"
               @click="removeFromVault(vaultKeepProp)"
               v-if="vaultKeepProp && state.activeVault.creatorId === state.account.id"
@@ -25,7 +25,7 @@
       </button>
     </div>
   </div>
-  <Modal :keep-prop="keepProp" v-if="keepProp.creatorId !== undefined" />
+  <Modal v-if="state.activeKeep.creatorId !== undefined" />
 </template>
 
 <script>
@@ -51,6 +51,7 @@ export default {
   setup() {
     const state = reactive({
       account: computed(() => AppState.account),
+      activeKeep: computed(() => AppState.activeKeep),
       activeVault: computed(() => AppState.activeVault),
       vaultKeeps: computed(() => AppState.vaultKeeps)
     })
@@ -66,9 +67,9 @@ export default {
       async removeFromVault(vaultKeep) {
         try {
           if (await Notification.confirmAction('Are you sure?', `Do you want to remove ${vaultKeep.name} from this Vault?`, 'warning', `Delete ${vaultKeep.name}`)) {
-            await vaultsService.removeFromVault(vaultKeep.id)
+            await vaultsService.removeFromVault(vaultKeep.vaultKeepId)
             await vaultsService.getVaultKeeps(vaultKeep.vaultId)
-            Notification.toast(`${vaultKeep.name} was deleted!`, 'error')
+            Notification.toast(`${vaultKeep.name} was deleted!`, 'success')
           } else {
             Notification.toast(`No worries! ${vaultKeep.name} is still here!`, 'info')
           }
@@ -104,12 +105,12 @@ img{
 }
 .icon-overlay{
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 15px;
+  top: 12px;
 }
 .btn-overlay{
   position: absolute;
-  right: 0px;
-  top: 5px;
+  right: 15px;
+  top: 12px;
 }
 </style>

@@ -48,6 +48,13 @@ namespace keepr.server.Services
 
 
 
+        internal IEnumerable<Vault> GetMyVaults(string id)
+        {
+            return _repo.GetMyVaults(id);
+        }
+
+
+
         internal IEnumerable<VaultKeepView> GetVaultKeeps(int id, Account userInfo)
         {
             Vault vault = _repo.GetById(id);

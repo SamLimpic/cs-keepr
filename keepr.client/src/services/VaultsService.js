@@ -7,6 +7,11 @@ class VaultsService {
     AppState.vaults = res.data
   }
 
+  async getPrivateVaults() {
+    const res = await api.get('account/vaults')
+    AppState.vaults = res.data.filter(v => v.isPrivate === true)
+  }
+
   async getProfileVaults(id) {
     const res = await api.get(`api/profiles/${id}/vaults`)
     AppState.vaults = res.data
@@ -31,15 +36,17 @@ class VaultsService {
   }
 
   async createVault() {
-    await api.post('api/vaults', AppState.newVault)
+    const res = await api.post('api/vaults', AppState.newVault)
+    AppState.newVault = res.data
   }
 
-  async createVaultAndAdd(keep) {
-    const vaultKeep = {
-      vaultId: AppState.newVault.id,
-      keepId: keep.id
-    }
-    await api.post('api/vaultkeeps', vaultKeep)
+  async editVault(edit) {
+    const res = await api.put(`api/vaults/${edit.id}`, edit)
+    AppState.activeVault = res.data
+  }
+
+  async deleteVault(vaultId) {
+    await api.delete(`api/vaults/${vaultId}`)
   }
 
   async removeFromVault(id) {

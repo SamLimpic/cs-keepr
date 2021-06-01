@@ -22,9 +22,23 @@
     <div id="add-vault" class="row justify-content-start pt-md-5 pt-3 pl-2">
       <div class="col">
         <h4 class="font-xl">
-          <u>Vaults</u>
+          <span v-if="state.profile.id === state.account.id && state.private === false">
+            <button type="button" aria-label="Public or Private" class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 mr-4" @click="showPrivates(true)">
+              <i class="fas fa-shield-alt"></i>
+            </button>
+            <u>Public Vaults</u>
+          </span>
+          <span v-if="state.profile.id === state.account.id && state.private === true">
+            <button type="button" aria-label="Public or Private" class="btn btn-outline-danger bg-transparent border-0 font-lg pt-0 px-2 mr-4" @click="showPrivates(false)">
+              <i class="fas fa-shield-alt"></i>
+            </button>
+            <u>Private Vaults</u>
+          </span>
+          <span v-else-if="state.profile.id !== state.account.id">
+            <u>Vaults</u>
+          </span>
           <span>
-            <button type="button" aria-label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-lg py-0 px-2 ml-3" @click="createVault" v-if="state.profile.id === state.account.id">
+            <button type="button" aria-label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 ml-4" @click="createVault" v-if="state.profile.id === state.account.id">
               <i class="fas fa-plus"></i>
             </button>
           </span>
@@ -60,6 +74,7 @@
 </template>
 
 <script>
+
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
@@ -74,6 +89,7 @@ export default {
     const route = useRoute()
     const state = reactive({
       loading: true,
+      private: false,
       profile: computed(() => AppState.profile),
       account: computed(() => AppState.account),
       keeps: computed(() => AppState.keeps),
@@ -95,7 +111,7 @@ export default {
       async createVault() {
         try {
           await Notification.multiModal('Vault')
-          await Notification.isPrivate()
+          await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
           Notification.toast(`Your new Vault, ${AppState.newVault.name}, was created!`, 'success')
           await vaultsService.getProfileVaults(route.params.id)
@@ -117,6 +133,14 @@ export default {
         await Notification.editAccount()
         await accountService.editAccount(AppState.account)
         Notification.toast('Your profile was updated!', 'success')
+      },
+      async showPrivates(bool) {
+        if (bool) {
+          await vaultsService.getPrivateVaults()
+        } else {
+          await vaultsService.getProfileVaults(route.params.id)
+        }
+        state.private = bool
       }
     }
   }

@@ -6,11 +6,13 @@
         {{ cardProp.name }}
       </h4>
     </div>
-    <Modal :keep-prop="cardProp" />
+    <Modal v-if="state.activeKeep.creatorId !== undefined" />
   </div>
 </template>
 
 <script>
+import { computed, reactive } from 'vue'
+import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 
 export default {
@@ -26,7 +28,12 @@ export default {
     }
   },
   setup() {
+    const state = reactive({
+      account: computed(() => AppState.account),
+      activeKeep: computed(() => AppState.activeKeep)
+    })
     return {
+      state,
       setActiveKeep(id) {
         try {
           keepsService.setActiveKeep(id)

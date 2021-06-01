@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using keepr.server.Models;
 using keepr.server.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.server.Controllers

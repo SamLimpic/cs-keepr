@@ -7,7 +7,7 @@
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-cog text-info fa-spin font-lg"></i>
+        <i class="fas fa-cog text-info fa-spin font-xxl"></i>
       </div>
     </div>
   </div>

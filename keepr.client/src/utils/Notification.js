@@ -64,7 +64,8 @@ export default class Notification {
       {
         title: `What shall we name your ${str}?`,
         icon: 'question',
-        inputPlaceholder: 'Name...'
+        input: 'text',
+        inputValue: `Your ${str}'s Name...`
       },
       {
         title: `Give your ${str} a brief description`,
@@ -72,6 +73,7 @@ export default class Notification {
         input: 'textarea',
         inputLabel: 'Description',
         inputPlaceholder: 'Description...',
+        inputValue: `Your ${str}'s Description...`,
         inputAttributes: {
           'aria-label': `${str} Description`
         }
@@ -107,7 +109,7 @@ export default class Notification {
     })
   }
 
-  static async isPrivate() {
+  static async isPrivate(vault) {
     await Swal.fire({
       title: 'Do you want your Vault to be Public or Private?',
       icon: 'question',
@@ -116,9 +118,10 @@ export default class Notification {
       denyButtonText: 'Private'
     }).then((result) => {
       if (result.isConfirmed) {
-        AppState.newVault.isPrivate = false
-      } else if (result.isDenied) {
-        AppState.newVault.isPrivate = false
+        vault.isPrivate = false
+      }
+      if (result.isDenied) {
+        vault.isPrivate = true
       }
     })
   }

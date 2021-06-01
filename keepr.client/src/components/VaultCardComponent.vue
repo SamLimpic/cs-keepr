@@ -1,5 +1,5 @@
 <template>
-  <div class="card px-md-2 px-1 pb-md-4 pb-2" v-if="cardProp.creatorId === profileProp">
+  <div class="card px-md-2 px-1 pb-md-4 pb-2 position-relative">
     <router-link :to="{name: 'Vault', params: {id: cardProp.id}}">
       <div class="position-relative">
         <img class="w-100 box-shadow" alt="Vault Image" :src="cardProp.img">
@@ -8,10 +8,20 @@
         </h4>
       </div>
     </router-link>
+    <button type="button"
+            aria-label="Remove Keep from Vault"
+            class="btn btn-outline-danger bg-transparent border-0 p-0 m-0 btn-overlay"
+            data-dismiss="modal"
+            v-if="cardProp.isPrivate"
+    >
+      <i class="fas fa-shield-alt font-lg"></i>
+    </button>
   </div>
 </template>
 
 <script>
+// import { vaultsService } from '../services/VaultsService'
+// import Notification from '../utils/Notification'
 
 export default {
   name: 'VaultCard',
@@ -19,14 +29,19 @@ export default {
     cardProp: {
       type: Object,
       required: true
-    },
-    profileProp: {
-      type: String,
-      required: true
     }
   },
   setup() {
     return {
+      // async makePublic(vault) {
+      //   await Notification.isPrivate(vault)
+      //   if (vault.isPrivate) {
+      //     Notification.toast(`${vault.name} is already Private!`, 'warning')
+      //   } else {
+      //     await vaultsService.editVault(vault)
+      //     Notification.toast(`${vault.name} was made Public!`, 'info')
+      //   }
+      // }
     }
   },
   components: {}
@@ -37,6 +52,11 @@ export default {
 img{
   border-radius: 15px;
   cursor: pointer;
+}
+.btn-overlay{
+  position: absolute;
+  right: 20px;
+  top: 15px;
 }
 .box-shadow {
   box-shadow: 7.5px 7.5px 15px  var(--dark);

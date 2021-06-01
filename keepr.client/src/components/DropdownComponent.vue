@@ -57,4 +57,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.dropdown-item {
+  cursor: pointer;
+}
 </style>

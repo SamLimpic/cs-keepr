@@ -3,7 +3,16 @@
     <div class="row justify-content-start pt-2">
       <div class="col px-4 position-relative">
         <div class="row justify-content-start">
-          <h2 class="font-xl ml-3 mt-1">
+          <h2 class="font-xl ml-3 mt-1 edit"
+              @click.stop=""
+              spellcheck="false"
+              contenteditable="true"
+              @blur="editName"
+              v-if="state.activeVault.creatorId === state.account.id"
+          >
+            <u> {{ state.activeVault.name }}</u>
+          </h2>
+          <h2 class="font-xl ml-3 mt-1" v-else>
             <u> {{ state.activeVault.name }}</u>
           </h2>
           <button type="button"
@@ -46,6 +55,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
 import Notification from '../utils/Notification'
+import router from '../router'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -63,7 +73,6 @@ export default {
         vaultsService.setActiveVault(route.params.id)
         await vaultsService.getVaultKeeps(route.params.id)
         state.loading = false
-        console.log(state.vaultKeeps)
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
       }
@@ -74,11 +83,19 @@ export default {
         try {
           if (await Notification.confirmAction('Are you sure?', `${vault.name} will be gone for good!`, 'warning', `Delete ${vault.name}`)) {
             await vaultsService.deleteVault(vault.id)
-            await vaultsService.getVaults(vault.id)
-            Notification.toast(`${vault.name} was deleted!`, 'error')
+            router.push({ name: 'Profile', params: { id: vault.creatorId } })
+            Notification.toast(`${vault.name} was deleted!`, 'success')
           } else {
             Notification.toast(`No worries! ${vault.name} is still here!`, 'info')
           }
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      },
+      async editName(event) {
+        try {
+          state.activeVault.name = event.target.innerText
+          await vaultsService.editVault(state.activeVault)
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
@@ -89,7 +106,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.edit{
+  min-width: 2rem;
+}
+.edit:hover{
+  border: 1px dashed var(--primary);
+}
 @media (min-width: 0) {
   .card-columns {
     -webkit-column-count: 2;
