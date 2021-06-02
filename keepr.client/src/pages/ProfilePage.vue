@@ -100,6 +100,7 @@ export default {
         await accountService.getProfile(route.params.id)
         await keepsService.getProfileKeeps(route.params.id)
         await vaultsService.getProfileVaults(route.params.id)
+        AppState.vaults = state.vaults.filter(v => !v.isPrivate)
         state.loading = false
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
@@ -135,10 +136,13 @@ export default {
         Notification.toast('Your profile was updated!', 'success')
       },
       async showPrivates(bool) {
+        await vaultsService.getProfileVaults(state.account.id)
         if (bool) {
-          await vaultsService.getPrivateVaults()
+          AppState.vaults = state.vaults.filter(v => v.isPrivate)
+          Notification.toast('Now showing your Private Vaults', 'warning')
         } else {
-          await vaultsService.getProfileVaults(route.params.id)
+          AppState.vaults = state.vaults.filter(v => !v.isPrivate)
+          Notification.toast('Now showing your Public Vaults', 'info')
         }
         state.private = bool
       }

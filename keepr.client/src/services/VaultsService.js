@@ -2,16 +2,6 @@ import { AppState } from '../AppState'
 import { api } from './AxiosService'
 
 class VaultsService {
-  async getVaults() {
-    const res = await api.get('api/vaults')
-    AppState.vaults = res.data
-  }
-
-  async getPrivateVaults() {
-    const res = await api.get('account/vaults')
-    AppState.vaults = res.data.filter(v => v.isPrivate === true)
-  }
-
   async getProfileVaults(id) {
     const res = await api.get(`api/profiles/${id}/vaults`)
     AppState.vaults = res.data

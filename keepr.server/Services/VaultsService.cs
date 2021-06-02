@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using keepr.server.Models;
 using keepr.server.Repositories;
-using keepr.server.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Linq;
 
 namespace keepr.server.Services
 {
-    public class VaultsService : IService<Vault>
+    public class VaultsService
     {
         private readonly VaultsRepository _repo;
 
@@ -29,38 +29,43 @@ namespace keepr.server.Services
 
 
 
-        public Vault GetById(int id)
+        public Vault GetById(int id, string userId)
         {
             Vault vault = _repo.GetById(id);
             if (vault == null)
             {
                 throw new Exception("Invalid Id");
             }
+            if (vault.CreatorId != userId && vault.IsPrivate)
+            {
+                throw new Exception("That vault is Private!");
+            }
             return vault;
         }
 
 
 
-        internal IEnumerable<Vault> GetVaultsByProfileId(string id)
+        internal IEnumerable<Vault> GetVaultsByProfileId(string id, string userId)
         {
-            return _repo.GetVaultsByProfileId(id);
+            IEnumerable<Vault> vaults = _repo.GetVaultsByProfileId(id);
+            if (id == userId)
+            {
+                return vaults;
+            }
+            IEnumerable<Vault> query = from v in vaults
+                                       where !v.IsPrivate
+                                       select v;
+            return query;
         }
 
 
 
-        internal IEnumerable<Vault> GetMyVaults(string id)
-        {
-            return _repo.GetMyVaults(id);
-        }
-
-
-
-        internal IEnumerable<VaultKeepView> GetVaultKeeps(int id, Account userInfo)
+        internal IEnumerable<VaultKeepView> GetVaultKeeps(int id, string userId)
         {
             Vault vault = _repo.GetById(id);
-            if (vault.IsPrivate == true && vault.CreatorId != userInfo.Id)
+            if (vault.CreatorId != userId && vault.IsPrivate)
             {
-                throw new Exception("That vault is private!");
+                throw new Exception("You can't access Keeps in a Private Vault!");
             }
             return _vkRepo.GetVaultKeeps(id);
         }
@@ -95,7 +100,7 @@ namespace keepr.server.Services
 
         public void Delete(int id, string creatorId)
         {
-            Vault vault = GetById(id);
+            Vault vault = GetById(id, creatorId);
             if (vault == null)
             {
                 throw new Exception("Invalid Id");

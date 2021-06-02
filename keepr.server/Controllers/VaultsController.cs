@@ -40,11 +40,12 @@ namespace keepr.server.Controllers
 
 
         [HttpGet("{id}")]
-        public ActionResult<Vault> GetById(int id)
+        public async Task<ActionResult<Vault>> GetById(int id)
         {
             try
             {
-                Vault vault = _service.GetById(id);
+                Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                Vault vault = _service.GetById(id, userInfo?.Id);
                 return Ok(vault);
             }
             catch (Exception e)
@@ -61,7 +62,7 @@ namespace keepr.server.Controllers
             try
             {
                 Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-                IEnumerable<VaultKeepView> keeps = _service.GetVaultKeeps(id, userInfo);
+                IEnumerable<VaultKeepView> keeps = _service.GetVaultKeeps(id, userInfo?.Id);
                 return Ok(keeps);
             }
             catch (Exception e)

@@ -17,7 +17,6 @@
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
-import { vaultsService } from '../services/VaultsService'
 import Notification from '../utils/Notification'
 
 export default {
@@ -32,7 +31,6 @@ export default {
     onMounted(async() => {
       try {
         await keepsService.getKeeps()
-        await vaultsService.getVaults()
         state.loading = false
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')

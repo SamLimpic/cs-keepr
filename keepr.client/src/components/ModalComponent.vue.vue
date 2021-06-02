@@ -11,7 +11,7 @@
           <div class="col-md-6 col-12 order-md-1 order-2 position-relative">
             <button type="button"
                     aria-label="Delete Keep"
-                    class="btn btn-outline-danger bg-transparent border-0 btn-overlay"
+                    class="btn btn-outline-danger bg-transparent border-0 btn-overlay font-xl"
                     data-dismiss="modal"
                     @click="deleteKeep(state.activeKeep)"
                     v-if="state.activeKeep.creatorId === state.account.id"
@@ -35,8 +35,11 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal">
               <span class="text-danger" aria-hidden="true"><i class="fas fa-times"></i></span>
             </button>
-            <div class="modal-body" v-if="state.activeKeep.creatorId === state.account.id">
-              <h2 class="modal-title edit"
+            <div class="modal-body position-relative" v-if="state.activeKeep.creatorId === state.account.id">
+              <button type="button" class="btn btn-outline-primary edit-overlay border-0 font-xl" aria-label="Edit Keep" @click="editKeep" v-if="state.activeKeep.creatorId === state.account.id && state.edit === true">
+                <i class="fas fa-edit"></i>
+              </button>
+              <h2 class="modal-title edit w-75"
                   @click.stop=""
                   spellcheck="false"
                   contenteditable="true"
@@ -44,7 +47,7 @@
               >
                 <u>{{ state.activeKeep.name }}</u>
               </h2>
-              <h3 class="edit"
+              <h3 class="edit w-75"
                   @click.stop=""
                   spellcheck="false"
                   contenteditable="true"
@@ -63,7 +66,7 @@
             </div>
             <div class="modal-footer row justify-content-between">
               <div class="col-md-5 col-3">
-                <div class="btn-group dropup">
+                <div class="btn-group dropup" v-if="state.user.isAuthenticated">
                   <button type="button"
                           class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
                           data-toggle="dropdown"
@@ -118,6 +121,8 @@ export default {
   name: 'Modal',
   setup() {
     const state = reactive({
+      edit: false,
+      user: computed(() => AppState.user),
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.vaults),
       activeKeep: computed(() => AppState.activeKeep)
@@ -148,18 +153,26 @@ export default {
           Notification.toast('Error: ' + error, 'error')
         }
       },
-      async editName(event) {
+      editName(event) {
         try {
           state.activeKeep.name = event.target.innerText
-          await keepsService.editKeep(state.activeKeep)
+          state.edit = true
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
       },
-      async editDescription(event) {
+      editDescription(event) {
         try {
           state.activeKeep.description = event.target.innerText
+          state.edit = true
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
+      },
+      async editKeep() {
+        try {
           await keepsService.editKeep(state.activeKeep)
+          location.reload()
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
@@ -187,7 +200,11 @@ img{
   position: absolute;
   right: 40px;
   top: 20px;
-  font-size: 2.5rem;
+}
+.edit-overlay{
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
 .modal-body {
   margin-bottom: 100px;
@@ -202,5 +219,12 @@ img{
 }
 .edit:hover{
   border: 1px dashed var(--primary);
+}
+.dropdown-menu {
+  max-height: 25vh;
+  overflow: auto;
+}
+.modal-content {
+  overflow-y: auto;
 }
 </style>

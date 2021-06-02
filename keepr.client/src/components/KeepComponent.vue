@@ -57,9 +57,12 @@ export default {
     })
     return {
       state,
-      setActiveKeep(id) {
+      async setActiveKeep(id) {
         try {
-          keepsService.setActiveKeep(id)
+          await keepsService.setActiveKeep(id)
+          if (state.account.id) {
+            await vaultsService.getProfileVaults(state.account.id)
+          }
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
