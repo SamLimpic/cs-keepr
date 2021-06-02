@@ -64,8 +64,8 @@
                 {{ state.activeKeep.description }}
               </h3>
             </div>
-            <div class="modal-footer row justify-content-between px-4">
-              <div class="btn-group dropup" v-if="state.user.isAuthenticated">
+            <div class="modal-footer row justify-content-between px-4 pb-md-3 pb-0">
+              <div class="btn-group dropup m-0 pl-md-0 pl-2" v-if="state.user.isAuthenticated">
                 <button type="button"
                         class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
                         data-toggle="dropdown"
@@ -93,7 +93,7 @@
                 </div>
               </div>
               <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
-                <h4 class="text-right p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
+                <h4 class="text-right p-0 m-0 pr-md-0 pr-1" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
                   {{ state.activeKeep.creator.name.split('@')[0] }}
                   <span><img class="rounded-circle icon mr-md-3 mr-0 ml-2" :src="state.activeKeep.creator.picture" alt="" /></span>
                 </h4>
