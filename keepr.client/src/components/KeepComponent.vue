@@ -59,7 +59,7 @@ export default {
       state,
       async setActiveKeep(id) {
         try {
-          await keepsService.setActiveKeep(id)
+          keepsService.setActiveKeep(id)
           if (state.account.id) {
             await vaultsService.getProfileVaults(state.account.id)
           }

@@ -64,44 +64,40 @@
                 {{ state.activeKeep.description }}
               </h3>
             </div>
-            <div class="modal-footer row justify-content-between">
-              <div class="col-md-5 col-3">
-                <div class="btn-group dropup" v-if="state.user.isAuthenticated">
-                  <button type="button"
-                          class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-label="Dropdown Vault List"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                  >
-                    Add to Vault
-                  </button>
-                  <button type="button"
-                          class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
-                          data-toggle="dropdown"
-                          aria-label="Dropdown Vault List"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                  >
-                    Add to Vault
-                  </button>
-                  <div class="dropdown-menu" v-if="state.account.id !== undefined">
-                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
-                    <div class="dropdown-divider"></div>
-                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
-                      Add to New Vault
-                    </li>
-                  </div>
+            <div class="modal-footer row justify-content-between px-4">
+              <div class="btn-group dropup" v-if="state.user.isAuthenticated">
+                <button type="button"
+                        class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-label="Dropdown Vault List"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
+                  Add to Vault
+                </button>
+                <button type="button"
+                        class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-label="Dropdown Vault List"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                >
+                  Add to Vault
+                </button>
+                <div class="dropdown-menu" v-if="state.account.id !== undefined">
+                  <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
+                    <b>Add to New Vault</b>
+                  </li>
+                  <div class="dropdown-divider"></div>
+                  <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
                 </div>
               </div>
-              <div class="col-md-5 col-7">
-                <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
-                  <h4 class="text-right p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
-                    {{ state.activeKeep.creator.name.split('@')[0] }}
-                    <span><img class="rounded-circle icon mr-md-3 mr-0 ml-2" :src="state.activeKeep.creator.picture" alt="" /></span>
-                  </h4>
-                </router-link>
-              </div>
+              <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
+                <h4 class="text-right p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
+                  {{ state.activeKeep.creator.name.split('@')[0] }}
+                  <span><img class="rounded-circle icon mr-md-3 mr-0 ml-2" :src="state.activeKeep.creator.picture" alt="" /></span>
+                </h4>
+              </router-link>
             </div>
           </div>
         </div>
@@ -207,7 +203,7 @@ img{
   top: 20px;
 }
 .modal-body {
-  margin-bottom: 100px;
+  margin-bottom: 70px;
 }
 .modal-footer {
   position: absolute;

@@ -25,9 +25,8 @@ class KeepsService {
     await api.delete(`api/keeps/${keepId}`)
   }
 
-  async setActiveKeep(keepId) {
-    const res = await api.get(`api/keeps/${keepId}`)
-    AppState.activeKeep = res.data
+  setActiveKeep(keepId) {
+    AppState.activeKeep = AppState.keeps.find(k => k.id === keepId)
   }
 }
 
