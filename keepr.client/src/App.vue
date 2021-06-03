@@ -7,7 +7,7 @@
   </main>
   <footer>
     <div class="bg-secondary text-light text-center pt-4 pb-2">
-      <p>Made with <span><i class="fas fa-heart text-primary mx-1"></i></span> by Samwise</p>
+      <p>Made with <span><i class="fas fa-ring text-warning mx-1"></i></span> by Samwise</p>
     </div>
   </footer>
 </template>

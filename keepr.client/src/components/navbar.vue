@@ -39,10 +39,10 @@
             @click="state.dropOpen = !state.dropOpen"
           >
             <img
-              :src="user.picture"
+              :src="account.picture"
               alt="user photo"
               height="40"
-              class="rounded"
+              class="rounded-circle"
             />
             <span class="mx-3 outline font-nav">{{ user.name }}</span>
           </div>
