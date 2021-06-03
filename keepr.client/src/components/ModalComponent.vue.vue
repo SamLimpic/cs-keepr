@@ -36,7 +36,7 @@
               <span class="text-danger" aria-hidden="true"><i class="fas fa-times"></i></span>
             </button>
             <div class="modal-body position-relative" v-if="state.activeKeep.creatorId === state.account.id">
-              <button type="button" class="btn btn-outline-primary edit-overlay border-0 font-xl" aria-label="Edit Keep" @click="editKeep" v-if="state.activeKeep.creatorId === state.account.id && state.edit === true">
+              <button type="button" class="btn btn-outline-info edit-overlay border-0 font-xl" aria-label="Edit Keep" @click="editKeep" v-if="state.activeKeep.creatorId === state.account.id && state.edit === true">
                 <i class="fas fa-edit"></i>
               </button>
               <h2 class="modal-title edit w-75"
