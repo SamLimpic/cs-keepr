@@ -44,11 +44,11 @@
 
 # Stretch Goals
 
-Keeps should be tagged, allowing users find keeps by tag
+<!-- Keeps should be tagged, allowing users find keeps by tag -->
 
-Users can create custom tags
+<!-- Users can create custom tags -->
 
-Tags are not duplicated (Games,games,GAMES)
+<!-- Tags are not duplicated (Games,games,GAMES) -->
 
 <!-- Stretch Goal API tests pass -->
 

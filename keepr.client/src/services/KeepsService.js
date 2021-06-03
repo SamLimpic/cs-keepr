@@ -32,6 +32,11 @@ class KeepsService {
     AppState.keepTags = res.data
   }
 
+  async getKeepsByTag(tagId) {
+    const res = await api.get(`api/tags/${tagId}/keeps`)
+    AppState.keeps = res.data
+  }
+
   async createKeep() {
     const res = await api.post('api/keeps', AppState.newKeep)
     AppState.newKeep = res.data

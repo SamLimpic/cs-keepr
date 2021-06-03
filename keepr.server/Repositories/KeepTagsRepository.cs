@@ -39,13 +39,20 @@ namespace keepr.server.Repositories
                     k.*,
                     kt.id as keepTagId,
                     kt.keepId,
-                    kt.tagId
+                    kt.tagId,
+                    a.*
                 FROM 
                     keep_tags kt
                     JOIN keeps k ON k.id = kt.keepId
+                    JOIN accounts a ON k.creatorId = a.id
                 WHERE tagId = @tagId
                 ";
-            return _db.Query<Keep>(sql, new { tagId });
+            return _db.Query<Keep, Account, Keep>(sql, (keep, account) =>
+           {
+               keep.Creator = account;
+               return keep;
+           }
+           , new { tagId }, splitOn: "id");
         }
 
 

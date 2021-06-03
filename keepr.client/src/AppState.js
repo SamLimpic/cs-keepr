@@ -17,5 +17,6 @@ export const AppState = reactive({
   newTags: [],
   vaultKeeps: [],
   keepTags: [],
+  activeTag: {},
   loading: true
 })

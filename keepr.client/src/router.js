@@ -31,6 +31,11 @@ const routes = [
     path: '/vault/:id',
     name: 'Vault',
     component: loadPage('VaultPage')
+  },
+  {
+    path: '/tag/:id',
+    name: 'Search',
+    component: loadPage('SearchPage')
   }
 ]
 

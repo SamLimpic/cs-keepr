@@ -1,15 +1,11 @@
 import { AppState } from '../AppState'
+import router from '../router'
 import { api } from './AxiosService'
 
 class TagsService {
   async getTags() {
     const res = await api.get('api/tags')
     AppState.tags = res.data
-  }
-
-  async getKeepsByTag(tag) {
-    const res = await api.get(`api/tags/${tag.id}/keeps`)
-    AppState.keeps = res.data
   }
 
   async createTags() {
@@ -42,6 +38,12 @@ class TagsService {
     })
     await api.post('api/keepTags', keepTags)
     AppState.newTags = []
+  }
+
+  async setActiveTag(tag) {
+    const res = await api.get(`api/tags/${tag.id}`)
+    AppState.activeTag = res.data
+    router.push({ name: 'Search', params: { id: tag.id } })
   }
 }
 

@@ -66,7 +66,7 @@
                 </h3>
               </div>
               <div class="row justify-content-center pr-md-5 pr-4 mx-2 pb-3 pt-2" v-if="state.keepTags[0]">
-                <Tag v-for="t in state.keepTags" :key="t.id" :tag-prop="t" />
+                <Tag v-for="t in state.keepTags" :key="t.id" :tag-prop="t" data-dismiss="modal" />
               </div>
             </div>
             <div class="footer pb-md-3 pb-0">
@@ -123,7 +123,7 @@
           </div>
         </div>
         <div class="row justify-content-center" v-else>
-          <div class="col text-center">
+          <div class="col-12 text-center">
             <i class="fas fa-ring text-warning fa-spin loading"></i>
           </div>
         </div>
@@ -258,7 +258,7 @@ img{
   overflow-y: auto;
 }
 .loading {
-font-size: 10rem;
-padding: 10rem;
+font-size: 15vh;
+padding: 15vh;
 }
 </style>
