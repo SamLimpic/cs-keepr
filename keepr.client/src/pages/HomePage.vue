@@ -7,7 +7,7 @@
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-cog text-info fa-spin font-xxl"></i>
+        <i class="fas fa-ring text-warning fa-spin font-xxl"></i>
       </div>
     </div>
   </div>
@@ -31,10 +31,10 @@ export default {
     })
     onMounted(async() => {
       try {
+        setTimeout(function() { state.loading = false }, 900)
         await tagsService.getTags()
         await keepsService.getKeeps()
         keepsService.shuffleKeeps()
-        state.loading = false
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
       }

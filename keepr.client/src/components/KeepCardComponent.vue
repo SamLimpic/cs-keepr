@@ -36,6 +36,8 @@ export default {
       state,
       async setActiveKeep(id) {
         try {
+          AppState.loading = true
+          setTimeout(function() { AppState.loading = false }, 1100)
           keepsService.setActiveKeep(id)
           await keepsService.getKeepTags(id)
         } catch (error) {

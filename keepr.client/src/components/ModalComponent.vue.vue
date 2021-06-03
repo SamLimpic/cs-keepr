@@ -1,13 +1,13 @@
 <template>
-  <div class="modal"
+  <div class="modal fade"
        id="keepModal"
        tabindex="-1"
        aria-labelledby="keepModalLabel"
        aria-hidden="true"
   >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-      <div class="modal-content">
-        <div class="row justify-content-center">
+      <div class="modal-content" v-if="state.activeKeep.creatorId !== undefined">
+        <div class="row justify-content-center" v-if="!state.loading">
           <div class="col-md-6 col-12 order-md-1 order-2 position-relative my-auto">
             <button type="button"
                     aria-label="Delete Keep"
@@ -35,39 +35,41 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal">
               <span class="text-danger" aria-hidden="true"><i class="fas fa-times"></i></span>
             </button>
-            <div class="modal-body position-relative" v-if="state.activeKeep.creatorId === state.account.id">
-              <button type="button" class="btn btn-outline-info edit-overlay border-0 font-xl" aria-label="Edit Keep" @click="editKeep" v-if="state.activeKeep.creatorId === state.account.id && state.edit === true">
-                <i class="fas fa-edit"></i>
-              </button>
-              <h2 class="modal-title edit w-75"
-                  @click.stop=""
-                  spellcheck="false"
-                  contenteditable="true"
-                  @blur="editName"
-              >
-                <u>{{ state.activeKeep.name }}</u>
-              </h2>
-              <h3 class="edit w-75"
-                  @click.stop=""
-                  spellcheck="false"
-                  contenteditable="true"
-                  @blur="editDescription"
-              >
-                {{ state.activeKeep.description }}
-              </h3>
-            </div>
-            <div class="modal-body" v-else>
-              <h2 class="modal-title">
-                <u>{{ state.activeKeep.name }}</u>
-              </h2>
-              <h3>
-                {{ state.activeKeep.description }}
-              </h3>
-            </div>
-            <div class="footer pb-md-3 pb-0">
-              <div class="row justify-content-center pr-md-5 pr-4 mx-2 pb-3" v-if="state.keepTags[0]">
+            <div class="modal-body position-relative">
+              <div v-if="state.activeKeep.creatorId === state.account.id">
+                <button type="button" class="btn btn-outline-info edit-overlay border-0 font-xl" aria-label="Edit Keep" @click="editKeep" v-if="state.activeKeep.creatorId === state.account.id && state.edit === true">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <h2 class="modal-title edit w-75"
+                    @click.stop=""
+                    spellcheck="false"
+                    contenteditable="true"
+                    @blur="editName"
+                >
+                  <u>{{ state.activeKeep.name }}</u>
+                </h2>
+                <h3 class="edit w-75"
+                    @click.stop=""
+                    spellcheck="false"
+                    contenteditable="true"
+                    @blur="editDescription"
+                >
+                  {{ state.activeKeep.description }}
+                </h3>
+              </div>
+              <div v-else>
+                <h2 class="modal-title">
+                  <u>{{ state.activeKeep.name }}</u>
+                </h2>
+                <h3>
+                  {{ state.activeKeep.description }}
+                </h3>
+              </div>
+              <div class="row justify-content-center pr-md-5 pr-4 mx-2 pb-3 pt-2" v-if="state.keepTags[0]">
                 <Tag v-for="t in state.keepTags" :key="t.id" :tag-prop="t" />
               </div>
+            </div>
+            <div class="footer pb-md-3 pb-0">
               <div class="modal-footer row mr-3 px-4 pb-2 justify-content-between">
                 <div class="btn-group dropup m-0 ml-md-2 ml-3 pt-md-1" v-if="state.user.isAuthenticated">
                   <button type="button"
@@ -120,6 +122,11 @@
             </div>
           </div>
         </div>
+        <div class="row justify-content-center" v-else>
+          <div class="col text-center">
+            <i class="fas fa-ring text-warning fa-spin loading"></i>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -138,6 +145,7 @@ export default {
   setup() {
     const state = reactive({
       edit: false,
+      loading: computed(() => AppState.loading),
       user: computed(() => AppState.user),
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.vaults),
@@ -229,7 +237,7 @@ img{
   top: 20px;
 }
 .modal-body {
-  margin-bottom: 145px;
+  margin-bottom: 65px;
 }
 .footer {
   position: absolute;
@@ -248,5 +256,9 @@ img{
 }
 .modal-content {
   overflow-y: auto;
+}
+.loading {
+font-size: 10rem;
+padding: 10rem;
 }
 </style>

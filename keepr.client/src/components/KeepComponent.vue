@@ -1,5 +1,5 @@
 <template>
-  <div class="card px-md-2 px-2 pb-md-3 pb-3">
+  <div class="card position-relative px-md-2 px-2 pb-md-3 pb-3">
     <div class="position-relative">
       <img class="w-100 box-shadow"
            :src="keepProp.img"
@@ -25,7 +25,7 @@
       </button>
     </div>
   </div>
-  <Modal v-if="state.activeKeep.creatorId !== undefined" />
+  <Modal />
 </template>
 
 <script>
@@ -59,6 +59,8 @@ export default {
       state,
       async setActiveKeep(id) {
         try {
+          AppState.loading = true
+          setTimeout(function() { AppState.loading = false }, 1100)
           keepsService.setActiveKeep(id)
           await keepsService.getKeepTags(id)
           if (state.account.id) {
@@ -116,5 +118,10 @@ img{
   position: absolute;
   right: 15px;
   top: 12px;
+}
+.loading {
+  position: absolute;
+  left: 5rem;
+  bottom: 5rem;
 }
 </style>

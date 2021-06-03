@@ -1,6 +1,6 @@
 <template>
-  <div class="col-md-3 col-4">
-    <button type="button" class="btn btn-outline-info m-0 w-100" disabled>
+  <div class="col-md-4 col-6">
+    <button type="button" class="btn btn-outline-info m-0 w-100 m-2" disabled>
       {{ tagProp.name }}
     </button>
   </div>
