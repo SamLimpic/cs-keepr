@@ -7,6 +7,21 @@ class KeepsService {
     AppState.keeps = res.data
   }
 
+  shuffleKeeps() {
+    const array = AppState.keeps
+    let currentIndex = array.length; let randomIndex
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--;
+
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]]
+    }
+
+    AppState.keeps = array
+  }
+
   async getProfileKeeps(id) {
     const res = await api.get(`api/profiles/${id}/keeps`)
     AppState.keeps = res.data

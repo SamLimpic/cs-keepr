@@ -31,6 +31,7 @@ export default {
     onMounted(async() => {
       try {
         await keepsService.getKeeps()
+        keepsService.shuffleKeeps()
         state.loading = false
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
