@@ -124,7 +124,7 @@
         </div>
         <div class="row justify-content-center" v-else>
           <div class="col-12 text-center">
-            <i class="fas fa-ring text-warning fa-spin loading"></i>
+            <i class="fas fa-ring fa-spin loading"></i>
           </div>
         </div>
       </div>

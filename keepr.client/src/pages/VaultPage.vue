@@ -44,7 +44,7 @@
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-ring text-warning fa-spin font-xxl"></i>
+        <i class="fas fa-ring fa-spin font-xxl"></i>
       </div>
     </div>
   </div>

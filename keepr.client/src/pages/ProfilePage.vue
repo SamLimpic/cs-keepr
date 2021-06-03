@@ -8,7 +8,15 @@
         <img class="rounded-circle profile" :src="state.profile.picture" alt="" />
       </div>
       <div class="col-md-10 col-7 pt-md-5">
-        <h2 class="font-xxl">
+        <div v-if="state.profile.name = 'Smeagol'">
+          <h2 class="font-xxl" v-if="state.smeagol === 'Smeagol'">
+            <u>{{ state.smeagol }}</u>
+          </h2>
+          <h2 class="font-xxl text-danger" v-if="state.smeagol === 'Gollum'">
+            <u><i>{{ state.smeagol }}</i></u>
+          </h2>
+        </div>
+        <h2 class="font-xxl" v-else>
           <u>{{ state.profile.name.split('@')[0] }}</u>
         </h2>
         <h3 class="font-lg">
@@ -67,7 +75,7 @@
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
-        <i class="fas fa-ring text-warning fa-spin font-xxl"></i>
+        <i class="fas fa-ring fa-spin font-xxl"></i>
       </div>
     </div>
   </div>
@@ -91,6 +99,7 @@ export default {
     const state = reactive({
       loading: true,
       private: false,
+      smeagol: 'Smeagol',
       profile: computed(() => AppState.profile),
       account: computed(() => AppState.account),
       keeps: computed(() => AppState.keeps),
@@ -105,6 +114,22 @@ export default {
         await vaultsService.getAllVaults(route.params.id)
         await vaultsService.getProfileVaults(route.params.id)
         AppState.vaults = state.vaults.filter(v => !v.isPrivate)
+        if (state.profile.name === 'Smeagol') {
+          setTimeout(function() {
+            state.smeagol = 'Gollum'
+            setTimeout(function() {
+              state.smeagol = 'Smeagol'
+            }, 1000)
+          }, 1200)
+          setInterval(() => {
+            setTimeout(function() {
+              state.smeagol = 'Gollum'
+              setTimeout(function() {
+                state.smeagol = 'Smeagol'
+              }, 1000)
+            }, 1200)
+          }, 3360)
+        }
       } catch (error) {
         Notification.toast('Error: ' + error, 'error')
       }

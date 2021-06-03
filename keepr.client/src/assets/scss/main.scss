@@ -29,6 +29,13 @@ main {
   text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000,
     0.5px 0.5px 0 #000;
 }
+.fa-ring {
+  color: var(--warning);
+  transition: all 0.3s ease-out;
+}
+.fa-ring:hover {
+  color: var(--danger);
+}
 @media (min-width: 0) {
   .font-xs {
     font-size: 0.5rem;
