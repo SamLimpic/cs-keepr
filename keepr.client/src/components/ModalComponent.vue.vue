@@ -8,7 +8,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
       <div class="modal-content">
         <div class="row justify-content-center">
-          <div class="col-md-6 col-12 order-md-1 order-2 position-relative">
+          <div class="col-md-6 col-12 order-md-1 order-2 position-relative my-auto">
             <button type="button"
                     aria-label="Delete Keep"
                     class="btn btn-outline-danger bg-transparent border-0 btn-overlay font-xl"
@@ -88,28 +88,27 @@
                   >
                     Add to Vault
                   </button>
-                  <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
-                    <b>Add to New Vault</b>
-                  </li>
-                  <div class="dropdown-divider"></div>
-                  <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
+                  <div class="dropdown-menu" v-if="state.user.isAuthenticated">
+                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
+                      <b>Add to New Vault</b>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
+                  </div>
                 </div>
-                <div class="btn-group dropup m-0 ml-md-2 ml-3 pt-md-1" v-else>
-                  <button type="button"
-                          class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
-                          data-toggle="dropdown"
-                          disabled
-                  >
-                    Add to Vault
-                  </button>
-                  <button type="button"
-                          class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
-                          data-toggle="dropdown"
-                          disabled
-                  >
-                    Add to Vault
-                  </button>
-                </div>
+                <button type="button"
+                        class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
+                        data-toggle="dropdown"
+                        disabled
+                        v-else
+                >
+                  Add to Vault
+                </button>
+
+                <!-- NOTE Enable to quickly add tags to existing posts -->
+                <!-- <button type="button" class="btn btn-primary border-0" data-dismiss="modal" @click="addTags">
+                  <i class="fas fa-plus font-lg"></i>
+                </button> -->
 
                 <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
                   <h4 class="text-right text-info p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
@@ -132,6 +131,7 @@ import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
 import { keepsService } from '../services/KeepsService'
 import Notification from '../utils/Notification'
+import { tagsService } from '../services/TagsService'
 
 export default {
   name: 'Modal',
@@ -193,6 +193,11 @@ export default {
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
+      },
+      async addTags() {
+        await Notification.addTags()
+        await tagsService.createTags()
+        await tagsService.createKeepTags(state.activeKeep)
       }
     }
   },
@@ -224,7 +229,7 @@ img{
   top: 20px;
 }
 .modal-body {
-  margin-bottom: 125px;
+  margin-bottom: 145px;
 }
 .footer {
   position: absolute;

@@ -18,6 +18,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { keepsService } from '../services/KeepsService'
 import Notification from '../utils/Notification'
+import { tagsService } from '../services/TagsService'
 
 export default {
   name: 'Home',
@@ -30,6 +31,7 @@ export default {
     })
     onMounted(async() => {
       try {
+        await tagsService.getTags()
         await keepsService.getKeeps()
         keepsService.shuffleKeeps()
         state.loading = false

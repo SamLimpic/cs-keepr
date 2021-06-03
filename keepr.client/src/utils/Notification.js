@@ -181,4 +181,16 @@ export default class Notification {
       }
     })
   }
+
+  static async addTags() {
+    const { value: tags } = await Swal.fire({
+      input: 'text',
+      inputLabel: 'Add Tags',
+      inputPlaceholder: 'Seperate Tags with Single Spaces'
+    })
+
+    if (tags) {
+      AppState.rawTags = (tags.toUpperCase().split(' '))
+    }
+  }
 }

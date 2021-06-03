@@ -14,13 +14,13 @@ class TagsService {
 
   async createTags() {
     let rawTags = AppState.rawTags
-    AppState.rawTags.forEach((r, index) => {
+    AppState.rawTags.forEach(r => {
       AppState.tags.forEach(t => {
         if (t.name === r) {
-          rawTags = rawTags.filter(!r)
+          rawTags = rawTags.filter(rt => rt !== r)
         }
       })
-      if (rawTags[index] === r) {
+      if (rawTags.includes(r)) {
         AppState.newTags.push({ name: r })
       }
     })
