@@ -56,11 +56,11 @@ namespace keepr.server.Controllers
 
 
         [HttpGet("{id}/keeps")]
-        public ActionResult<IEnumerable<KeepTagView>> GetKeepsByTag(int id)
+        public ActionResult<IEnumerable<Keep>> GetKeepsByTag(int id)
         {
             try
             {
-                IEnumerable<KeepTagView> keeps = _service.GetKeepsByTag(id);
+                IEnumerable<Keep> keeps = _service.GetKeepsByTag(id);
                 return Ok(keeps);
             }
             catch (Exception e)

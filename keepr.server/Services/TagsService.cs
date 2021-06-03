@@ -42,7 +42,7 @@ namespace keepr.server.Services
 
 
 
-        internal IEnumerable<KeepTagView> GetKeepsByTag(int id)
+        internal IEnumerable<Keep> GetKeepsByTag(int id)
         {
             return _ktRepo.GetKeepsByTag(id);
         }

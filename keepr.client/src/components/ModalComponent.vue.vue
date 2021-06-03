@@ -88,13 +88,27 @@
                   >
                     Add to Vault
                   </button>
-                  <div class="dropdown-menu" v-if="state.account.id !== undefined">
-                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
-                      <b>Add to New Vault</b>
-                    </li>
-                    <div class="dropdown-divider"></div>
-                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
-                  </div>
+                  <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
+                    <b>Add to New Vault</b>
+                  </li>
+                  <div class="dropdown-divider"></div>
+                  <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
+                </div>
+                <div class="btn-group dropup m-0 ml-md-2 ml-3 pt-md-1" v-else>
+                  <button type="button"
+                          class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
+                          data-toggle="dropdown"
+                          disabled
+                  >
+                    Add to Vault
+                  </button>
+                  <button type="button"
+                          class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
+                          data-toggle="dropdown"
+                          disabled
+                  >
+                    Add to Vault
+                  </button>
                 </div>
 
                 <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">

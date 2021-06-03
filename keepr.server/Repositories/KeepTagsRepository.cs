@@ -32,7 +32,7 @@ namespace keepr.server.Repositories
 
 
 
-        public IEnumerable<KeepTagView> GetKeepsByTag(int tagId)
+        public IEnumerable<Keep> GetKeepsByTag(int tagId)
         {
             string sql = @"
                 SELECT
@@ -45,8 +45,7 @@ namespace keepr.server.Repositories
                     JOIN keeps k ON k.id = kt.keepId
                 WHERE tagId = @tagId
                 ";
-            // return _db.Query<KeepTagView>(sql, new { tagId });
-            return _db.Query<KeepTagView>(sql, new { tagId });
+            return _db.Query<Keep>(sql, new { tagId });
         }
 
 
@@ -64,7 +63,6 @@ namespace keepr.server.Repositories
                     JOIN tags t ON t.id = kt.tagId
                 WHERE keepId = @keepId
                 ";
-            // return _db.Query<KeepTagView>(sql, new { tagId });
             return _db.Query<KeepTagView>(sql, new { keepId });
         }
 
