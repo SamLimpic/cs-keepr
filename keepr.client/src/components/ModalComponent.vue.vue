@@ -64,40 +64,46 @@
                 {{ state.activeKeep.description }}
               </h3>
             </div>
-            <div class="modal-footer row justify-content-between px-4 pb-md-3 pb-0">
-              <div class="btn-group dropup m-0 pl-md-0 pl-2" v-if="state.user.isAuthenticated">
-                <button type="button"
-                        class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-label="Dropdown Vault List"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                >
-                  Add to Vault
-                </button>
-                <button type="button"
-                        class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-label="Dropdown Vault List"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                >
-                  Add to Vault
-                </button>
-                <div class="dropdown-menu" v-if="state.account.id !== undefined">
-                  <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
-                    <b>Add to New Vault</b>
-                  </li>
-                  <div class="dropdown-divider"></div>
-                  <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
-                </div>
+            <div class="footer pb-md-3 pb-0">
+              <div class="row justify-content-center pr-md-5 pr-4 mx-2 pb-3" v-if="state.keepTags[0]">
+                <Tag v-for="t in state.keepTags" :key="t.id" :tag-prop="t" />
               </div>
-              <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
-                <h4 class="text-right p-0 m-0 pr-md-0 pr-1" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
-                  {{ state.activeKeep.creator.name.split('@')[0] }}
-                  <span><img class="rounded-circle icon mr-md-3 mr-0 ml-2" :src="state.activeKeep.creator.picture" alt="" /></span>
-                </h4>
-              </router-link>
+              <div class="modal-footer row mr-3 px-4 pb-2 justify-content-between">
+                <div class="btn-group dropup m-0 ml-md-2 ml-3 pt-md-1" v-if="state.user.isAuthenticated">
+                  <button type="button"
+                          class="btn btn-lg btn-outline-primary d-md-block d-none dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-label="Dropdown Vault List"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                  >
+                    Add to Vault
+                  </button>
+                  <button type="button"
+                          class="btn btn-outline-primary d-md-none d-block dropdown-toggle"
+                          data-toggle="dropdown"
+                          aria-label="Dropdown Vault List"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                  >
+                    Add to Vault
+                  </button>
+                  <div class="dropdown-menu" v-if="state.account.id !== undefined">
+                    <li class="dropdown-item" data-dismiss="modal" @click="createVault(state.activeKeep)">
+                      <b>Add to New Vault</b>
+                    </li>
+                    <div class="dropdown-divider"></div>
+                    <Dropdown v-for="v in state.vaults" :key="v.id" :vault-prop="v" :keep-prop="state.activeKeep" />
+                  </div>
+                </div>
+
+                <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
+                  <h4 class="text-right text-info p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
+                    {{ state.activeKeep.creator.name.split('@')[0] }}
+                    <span><img class="rounded-circle icon ml-2 mr-md-3 mr-2" :src="state.activeKeep.creator.picture" alt="" /></span>
+                  </h4>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -121,13 +127,14 @@ export default {
       user: computed(() => AppState.user),
       account: computed(() => AppState.account),
       vaults: computed(() => AppState.vaults),
+      keepTags: computed(() => AppState.keepTags),
       activeKeep: computed(() => AppState.activeKeep)
     })
     return {
       state,
       async createVault(keep) {
         try {
-          await Notification.multiModal('Vault')
+          await Notification.vaultModal()
           await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
           await vaultsService.addToVault(AppState.newVault.id, keep)
@@ -203,9 +210,9 @@ img{
   top: 20px;
 }
 .modal-body {
-  margin-bottom: 70px;
+  margin-bottom: 125px;
 }
-.modal-footer {
+.footer {
   position: absolute;
   bottom: 0px;
   width: 100%;

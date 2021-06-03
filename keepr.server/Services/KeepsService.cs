@@ -10,9 +10,12 @@ namespace keepr.server.Services
     {
         private readonly KeepsRepository _repo;
 
-        public KeepsService(KeepsRepository repo)
+        private readonly KeepTagsRepository _ktRepo;
+
+        public KeepsService(KeepsRepository repo, KeepTagsRepository ktRepo)
         {
             _repo = repo;
+            _ktRepo = ktRepo;
         }
 
 
@@ -40,6 +43,13 @@ namespace keepr.server.Services
         internal IEnumerable<Keep> GetKeepsByProfileId(string id)
         {
             return _repo.GetKeepsByProfileId(id);
+        }
+
+
+
+        internal IEnumerable<KeepTagView> GetKeepTags(int id)
+        {
+            return _ktRepo.GetKeepTags(id);
         }
 
 

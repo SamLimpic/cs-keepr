@@ -55,6 +55,22 @@ namespace keepr.server.Controllers
 
 
 
+        [HttpGet("{id}/tags")]
+        public ActionResult<IEnumerable<KeepTagView>> GetKeepTags(int id)
+        {
+            try
+            {
+                IEnumerable<KeepTagView> tags = _service.GetKeepTags(id);
+                return Ok(tags);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<Keep>> Create([FromBody] Keep body)

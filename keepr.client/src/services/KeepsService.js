@@ -12,8 +12,14 @@ class KeepsService {
     AppState.keeps = res.data
   }
 
+  async getKeepTags(id) {
+    const res = await api.get(`api/keeps/${id}/tags`)
+    AppState.keepTags = res.data
+  }
+
   async createKeep() {
-    await api.post('api/keeps', AppState.newKeep)
+    const res = await api.post('api/keeps', AppState.newKeep)
+    AppState.newKeep = res.data
   }
 
   async editKeep(edit) {

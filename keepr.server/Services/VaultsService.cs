@@ -83,7 +83,6 @@ namespace keepr.server.Services
         {
             Vault original = _repo.GetById(edit.Id);
             original.Name = edit.Name.Length > 0 ? edit.Name : original.Name;
-            original.Description = edit.Description.Length > 0 ? edit.Description : original.Description;
             original.Img = edit.Img.Length > 0 ? edit.Img : original.Img;
             if (original == null)
             {

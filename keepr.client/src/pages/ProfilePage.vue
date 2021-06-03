@@ -5,14 +5,14 @@
         <button type="button" class="btn btn-outline-info btn-overlay font-md" aria-label="Edit Profile" @click="editProfile" v-if="state.profile.id === state.account.id">
           <i class="fas fa-edit"></i>
         </button>
-        <img class="rounded-circle" :src="state.profile.picture" alt="" />
+        <img class="rounded-circle profile" :src="state.profile.picture" alt="" />
       </div>
       <div class="col-md-10 col-7 pt-md-5">
         <h2 class="font-xxl">
           <u>{{ state.profile.name.split('@')[0] }}</u>
         </h2>
         <h3 class="font-lg">
-          Vaults: {{ state.vaults.length }}
+          Vaults: {{ state.allVaults.length }}
         </h3>
         <h3 class="font-lg">
           Keeps: {{ state.keeps.length }}
@@ -79,6 +79,7 @@ import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
 import { keepsService } from '../services/KeepsService'
+import { tagsService } from '../services/TagsService'
 import { accountService } from '../services/AccountService'
 import Notification from '../utils/Notification'
 import { useRoute } from 'vue-router'
@@ -93,12 +94,14 @@ export default {
       profile: computed(() => AppState.profile),
       account: computed(() => AppState.account),
       keeps: computed(() => AppState.keeps),
-      vaults: computed(() => AppState.vaults)
+      vaults: computed(() => AppState.vaults),
+      allVaults: computed(() => AppState.allVaults)
     })
     onMounted(async() => {
       try {
         await accountService.getProfile(route.params.id)
         await keepsService.getProfileKeeps(route.params.id)
+        await vaultsService.getAllVaults(route.params.id)
         await vaultsService.getProfileVaults(route.params.id)
         AppState.vaults = state.vaults.filter(v => !v.isPrivate)
         state.loading = false
@@ -111,19 +114,24 @@ export default {
       state,
       async createVault() {
         try {
-          await Notification.multiModal('Vault')
+          await Notification.vaultModal()
           await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
           Notification.toast(`Your new Vault, ${AppState.newVault.name}, was created!`, 'success')
           await vaultsService.getProfileVaults(route.params.id)
+          AppState.vaults = state.vaults.filter(v => !v.isPrivate)
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
       },
       async createKeep() {
         try {
-          await Notification.multiModal('Keep')
+          await Notification.keepModal()
           await keepsService.createKeep()
+          if (AppState.rawTags[0]) {
+            await tagsService.createTags()
+            await tagsService.createKeepTags(AppState.newKeep)
+          }
           Notification.toast(`Your new Keep, ${AppState.newKeep.name}, was created!`, 'success')
           await keepsService.getProfileKeeps(route.params.id)
         } catch (error) {
@@ -155,6 +163,10 @@ export default {
 img{
   border-radius: 10px;
   width: 100%;
+}
+.profile {
+  height: auto;
+  object-fit: cover;
 }
 .card {
   background: transparent;

@@ -54,49 +54,45 @@ export default class Notification {
     })
   }
 
-  static async multiModal(str) {
+  static async keepModal() {
     await Swal.mixin({
-      title: `Create a New ${str}`,
+      title: 'Create a New Keep',
       input: 'text',
       confirmButtonText: 'Next &rarr;',
-      progressSteps: [1, 2, 3]
+      progressSteps: [1, 2, 3, 4]
     }).queue([
       {
-        title: `What shall we name your ${str}?`,
-        icon: 'question',
+        title: 'Give your Keep a Name!',
+        icon: 'info',
         input: 'text',
-        inputValue: `Your ${str}'s Name...`
+        inputValue: "Your Keep's Name..."
       },
       {
-        title: `Give your ${str} a brief description`,
+        title: 'Add a brief Description',
         icon: 'info',
         input: 'textarea',
         inputLabel: 'Description',
         inputPlaceholder: 'Description...',
-        inputValue: `Your ${str}'s Description...`,
+        inputValue: "Your Keep's Description...",
         inputAttributes: {
-          'aria-label': `${str} Description`
+          'aria-label': 'Keep Description'
         }
       },
       {
-        title: `Add an image to your ${str}`,
+        title: 'Give your Keep a Cover Image',
         icon: 'info',
         input: 'text',
         inputPlaceholder: 'Img Url...',
         text: "We'll provide a placeholder by default..."
+      },
+      {
+        title: 'Add search Tags to your Keep!',
+        icon: 'info',
+        input: 'text',
+        inputPlaceholder: 'Separate your Tags with Single Spaces'
       }
     ]).then((result) => {
-      if (result.value && str === 'Vault') {
-        const item = AppState.newVault
-        item.name = result.value[0]
-        item.description = result.value[1]
-        if (result.value[2] === '') {
-          item.img = 'http://www.fillmurray.com/g/300/300'
-        } else {
-          item.img = result.value[2]
-        }
-      }
-      if (result.value && str === 'Keep') {
+      if (result.value) {
         const item = AppState.newKeep
         item.name = result.value[0]
         item.description = result.value[1]
@@ -104,6 +100,40 @@ export default class Notification {
           item.img = 'http://www.fillmurray.com/300/300'
         } else {
           item.img = result.value[2]
+        }
+        AppState.rawTags = (result.value[3].toUpperCase().split(' '))
+      }
+    })
+  }
+
+  static async vaultModal() {
+    await Swal.mixin({
+      title: 'Create a New Vault',
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      progressSteps: [1, 2]
+    }).queue([
+      {
+        title: 'What shall we name your Vault?',
+        icon: 'question',
+        input: 'text',
+        inputValue: "Your Vault's Name..."
+      },
+      {
+        title: 'Add an image to your Vault',
+        icon: 'info',
+        input: 'text',
+        inputPlaceholder: 'Img Url...',
+        text: "We'll provide a placeholder by default..."
+      }
+    ]).then((result) => {
+      if (result.value) {
+        const item = AppState.newVault
+        item.name = result.value[0]
+        if (result.value[1] === '') {
+          item.img = 'http://www.fillmurray.com/g/300/300'
+        } else {
+          item.img = result.value[1]
         }
       }
     })

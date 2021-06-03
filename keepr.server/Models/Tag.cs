@@ -4,7 +4,7 @@ using keepr.server.Interfaces;
 
 namespace keepr.server.Models
 {
-    public class Vault : IItem
+    public class Tag : IItem
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -12,17 +12,8 @@ namespace keepr.server.Models
 
 
 
-        public Profile Creator { get; set; }
-
-        public string CreatorId { get; set; }
-
         [Required]
         [MinLength(1)]
         public string Name { get; set; }
-
-        [Required]
-        public bool IsPrivate { get; set; } = false;
-
-        public string Img { get; set; } = "http://www.fillmurray.com/g/300/300";
     }
 }

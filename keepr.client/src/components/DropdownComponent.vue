@@ -1,6 +1,7 @@
 <template>
   <li class="dropdown-item" data-dismiss="modal" @click="addToVault(vaultProp, keepProp)" v-if="vaultProp.creatorId === state.account.id">
-    {{ vaultProp.name }}
+    <span class="text-danger" v-if="vaultProp.isPrivate">{{ vaultProp.name }}</span>
+    <span v-else>{{ vaultProp.name }}</span>
   </li>
 </template>
 

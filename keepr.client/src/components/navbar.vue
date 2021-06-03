@@ -2,7 +2,10 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
     <router-link class="navbar-brand d-flex outline" :to="{ name: 'Home' }">
       <h1 class="pl-2">
-        <i class="fab fa-kaggle text-primary"></i><span class="outline-plus">eepr</span>
+        <i class="fab fa-facebook-f text-primary"></i><span class="outline-plus">ellowship</span>
+        <span><button type="button" aria-label="Add Keep" class="btn btn-outline-primary bg-transparent border-0 outline-plus p-0 px-1 my-0 ml-2" @click="createKeep" v-if="user.isAuthenticated">
+          <h2 class="m-0 p-0"><i class="fas fa-plus"></i></h2>
+        </button></span>
       </h1>
     </router-link>
     <button
@@ -19,14 +22,6 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link :to="{ name: 'Home' }" class="nav-link outline font-nav">
-            Home
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link :to="{ name: 'About' }" class="nav-link outline font-nav">
-            About
-          </router-link>
         </li>
       </ul>
       <span class="navbar-text text-light">
@@ -78,6 +73,10 @@
 import { AuthService } from '../services/AuthService'
 import { AppState } from '../AppState'
 import { computed, reactive } from 'vue'
+import { keepsService } from '../services/KeepsService'
+import { tagsService } from '../services/TagsService'
+import Notification from '../utils/Notification'
+
 export default {
   name: 'Navbar',
   setup() {
@@ -93,6 +92,20 @@ export default {
       },
       async logout() {
         await AuthService.logout({ returnTo: window.location.origin })
+      },
+      async createKeep() {
+        try {
+          await Notification.keepModal()
+          await keepsService.createKeep()
+          if (AppState.rawTags[0]) {
+            await tagsService.createTags()
+            await tagsService.createKeepTags(AppState.newKeep)
+          }
+          Notification.toast(`Your new Keep, ${AppState.newKeep.name}, was created!`, 'success')
+          await keepsService.getKeeps()
+        } catch (error) {
+          Notification.toast('Error: ' + error, 'error')
+        }
       }
     }
   }

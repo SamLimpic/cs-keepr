@@ -12,7 +12,17 @@
             aria-label="Remove Keep from Vault"
             class="btn btn-outline-danger bg-transparent border-0 p-0 m-0 btn-overlay"
             data-dismiss="modal"
+            disabled
             v-if="cardProp.isPrivate"
+    >
+      <i class="fas fa-shield-alt font-lg"></i>
+    </button>
+    <button type="button"
+            aria-label="Remove Keep from Vault"
+            class="btn btn-outline-info bg-transparent border-0 p-0 m-0 btn-overlay"
+            data-dismiss="modal"
+            disabled
+            v-else
     >
       <i class="fas fa-shield-alt font-lg"></i>
     </button>
@@ -20,9 +30,6 @@
 </template>
 
 <script>
-// import { vaultsService } from '../services/VaultsService'
-// import Notification from '../utils/Notification'
-
 export default {
   name: 'VaultCard',
   props: {
@@ -32,17 +39,7 @@ export default {
     }
   },
   setup() {
-    return {
-      // async makePublic(vault) {
-      //   await Notification.isPrivate(vault)
-      //   if (vault.isPrivate) {
-      //     Notification.toast(`${vault.name} is already Private!`, 'warning')
-      //   } else {
-      //     await vaultsService.editVault(vault)
-      //     Notification.toast(`${vault.name} was made Public!`, 'info')
-      //   }
-      // }
-    }
+    return {}
   },
   components: {}
 }
@@ -63,6 +60,8 @@ img{
   -moz-box-shadow: 7.5px 7.5px 15px  var(--dark);
   -webkit-box-shadow: 7.5px 7.5px 15px  var(--dark);
   -o-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  object-fit: cover;
+  min-height: 7rem;
 }
 .text-overlay{
   position: absolute;

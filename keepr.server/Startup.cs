@@ -61,11 +61,15 @@ namespace keepr.server
             services.AddScoped<AccountsService>();
             services.AddTransient<VaultsService>();
             services.AddTransient<KeepsService>();
+            services.AddTransient<TagsService>();
             services.AddTransient<VaultKeepsService>();
+            services.AddTransient<KeepTagsService>();
 
             services.AddScoped<AccountsRepository>();
             services.AddTransient<VaultsRepository>();
             services.AddTransient<KeepsRepository>();
+            services.AddTransient<TagsRepository>();
+            services.AddTransient<KeepTagsRepository>();
             services.AddTransient<VaultKeepsRepository>();
 
             // TODO[epic=DB] database Connection

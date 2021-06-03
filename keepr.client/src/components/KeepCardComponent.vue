@@ -34,9 +34,10 @@ export default {
     })
     return {
       state,
-      setActiveKeep(id) {
+      async setActiveKeep(id) {
         try {
           keepsService.setActiveKeep(id)
+          await keepsService.getKeepTags(id)
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
         }
@@ -53,6 +54,9 @@ export default {
   -moz-box-shadow: 7.5px 7.5px 15px  var(--dark);
   -webkit-box-shadow: 7.5px 7.5px 15px  var(--dark);
   -o-box-shadow: 7.5px 7.5px 15px  var(--dark);
+  object-fit: cover;
+  min-height: 7rem;
+
 }
 img{
   border-radius: 15px;
