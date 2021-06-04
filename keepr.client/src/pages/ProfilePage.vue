@@ -1,14 +1,27 @@
 <template>
-  <div class="profile container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
+  <div
+    class="profile container-fluid py-md-4 py-2 px-md-5 px-4"
+    v-if="!state.loading"
+  >
     <div id="profile-info" class="row justify-content-center">
       <div class="col-md-2 col-5 pt-md-4 pt-3">
-        <button type="button" class="btn btn-outline-info btn-overlay font-md" aria-label="Edit Profile" @click="editProfile" v-if="state.profile.id === state.account.id">
+        <button
+          type="button"
+          class="btn btn-outline-info btn-overlay font-md"
+          aria-label="Edit Profile"
+          @click="editProfile"
+          v-if="state.profile.id === state.account.id"
+        >
           <i class="fas fa-edit"></i>
         </button>
-        <img class="rounded-circle profile" :src="state.profile.picture" alt="" />
+        <img
+          class="rounded-circle profile"
+          :src="state.profile.picture"
+          alt=""
+        />
       </div>
       <div class="col-md-10 col-7 pt-md-5">
-        <div v-if="state.profile.name = 'Smeagol'">
+        <div v-if="state.profile.name === 'Smeagol'">
           <h2 class="font-xxl" v-if="state.smeagol === 'Smeagol'">
             <u>{{ state.smeagol }}</u>
           </h2>
@@ -17,7 +30,7 @@
           </h2>
         </div>
         <h2 class="font-xxl" v-else>
-          <u>{{ state.profile.name.split('@')[0] }}</u>
+          <u>{{ state.profile.name.split("@")[0] }}</u>
         </h2>
         <h3 class="font-lg">
           Vaults: {{ state.allVaults.length }}
@@ -30,14 +43,32 @@
     <div id="add-vault" class="row justify-content-start pt-md-5 pt-3 pl-2">
       <div class="col">
         <h4 class="font-xl">
-          <span v-if="state.profile.id === state.account.id && state.private === false">
-            <button type="button" aria-label="Public or Private" class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 mr-4" @click="showPrivates(true)">
+          <span
+            v-if="
+              state.profile.id === state.account.id && state.private === false
+            "
+          >
+            <button
+              type="button"
+              aria-label="Public or Private"
+              class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 mr-4"
+              @click="showPrivates(true)"
+            >
               <i class="fas fa-shield-alt"></i>
             </button>
             <u>Public Vaults</u>
           </span>
-          <span v-if="state.profile.id === state.account.id && state.private === true">
-            <button type="button" aria-label="Public or Private" class="btn btn-outline-danger bg-transparent border-0 font-lg pt-0 px-2 mr-4" @click="showPrivates(false)">
+          <span
+            v-if="
+              state.profile.id === state.account.id && state.private === true
+            "
+          >
+            <button
+              type="button"
+              aria-label="Public or Private"
+              class="btn btn-outline-danger bg-transparent border-0 font-lg pt-0 px-2 mr-4"
+              @click="showPrivates(false)"
+            >
               <i class="fas fa-shield-alt"></i>
             </button>
             <u>Private Vaults</u>
@@ -46,7 +77,13 @@
             <u>Vaults</u>
           </span>
           <span>
-            <button type="button" aria-label="Add Vault" class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 ml-4" @click="createVault" v-if="state.profile.id === state.account.id">
+            <button
+              type="button"
+              aria-label="Add Vault"
+              class="btn btn-outline-info bg-transparent border-0 font-lg pt-0 px-2 ml-4"
+              @click="createVault"
+              v-if="state.profile.id === state.account.id"
+            >
               <i class="fas fa-plus"></i>
             </button>
           </span>
@@ -54,14 +91,25 @@
       </div>
     </div>
     <div id="vaults" class="card-columns">
-      <VaultCard v-for="v in state.vaults" :key="v.id" :card-prop="v" :profile-prop="route.params.id" />
+      <VaultCard
+        v-for="v in state.vaults"
+        :key="v.id"
+        :card-prop="v"
+        :profile-prop="route.params.id"
+      />
     </div>
     <div id="add-keep" class="row justify-content-start pt-md-4 pt-3 pl-2">
       <div class="col">
         <h4 class="font-xl">
           <u>Keeps</u>
           <span>
-            <button type="button" aria-label="Add Keep" class="btn btn-outline-info bg-transparent border-0 font-lg py-0 px-2 ml-3" @click="createKeep" v-if="state.profile.id === state.account.id">
+            <button
+              type="button"
+              aria-label="Add Keep"
+              class="btn btn-outline-info bg-transparent border-0 font-lg py-0 px-2 ml-3"
+              @click="createKeep"
+              v-if="state.profile.id === state.account.id"
+            >
               <i class="fas fa-plus"></i>
             </button>
           </span>
@@ -69,7 +117,12 @@
       </div>
     </div>
     <div id="keeps" class="card-columns">
-      <KeepCard v-for="k in state.keeps" :key="k.id" :card-prop="k" :profile-prop="route.params.id" />
+      <KeepCard
+        v-for="k in state.keeps"
+        :key="k.id"
+        :card-prop="k"
+        :profile-prop="route.params.id"
+      />
     </div>
   </div>
   <div class="loading container-fluid pt-5" v-else>
@@ -82,7 +135,6 @@
 </template>
 
 <script>
-
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
@@ -108,7 +160,9 @@ export default {
     })
     onMounted(async() => {
       try {
-        setTimeout(function() { state.loading = false }, 900)
+        setTimeout(function() {
+          state.loading = false
+        }, 900)
         await accountService.getProfile(route.params.id)
         await keepsService.getProfileKeeps(route.params.id)
         await vaultsService.getAllVaults(route.params.id)
@@ -142,7 +196,10 @@ export default {
           await Notification.vaultModal()
           await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
-          Notification.toast(`Your new Vault, ${AppState.newVault.name}, was created!`, 'success')
+          Notification.toast(
+            `Your new Vault, ${AppState.newVault.name}, was created!`,
+            'success'
+          )
           await vaultsService.getProfileVaults(route.params.id)
           AppState.vaults = state.vaults.filter(v => !v.isPrivate)
         } catch (error) {
@@ -157,7 +214,10 @@ export default {
             await tagsService.createTags()
             await tagsService.createKeepTags(AppState.newKeep)
           }
-          Notification.toast(`Your new Keep, ${AppState.newKeep.name}, was created!`, 'success')
+          Notification.toast(
+            `Your new Keep, ${AppState.newKeep.name}, was created!`,
+            'success'
+          )
           await keepsService.getProfileKeeps(route.params.id)
         } catch (error) {
           Notification.toast('Error: ' + error, 'error')
@@ -185,7 +245,7 @@ export default {
 </script>
 
 <style scoped>
-img{
+img {
   border-radius: 10px;
   width: 100%;
 }
@@ -197,7 +257,7 @@ img{
   background: transparent;
   border: none;
 }
-.btn-overlay{
+.btn-overlay {
   position: absolute;
   border: none;
   background: transparent;
@@ -245,5 +305,4 @@ img{
     column-count: 6;
   }
 }
-
 </style>

@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
     <router-link class="navbar-brand d-flex outline" :to="{ name: 'Home' }">
       <h1 class="pl-2">
-        <i class="fab fa-facebook-f text-primary"></i><span class="outline-plus">ellowship</span>
-        <span><button type="button" aria-label="Add Keep" class="btn btn-outline-primary bg-transparent border-0 outline-plus p-0 px-1 my-0 ml-2" @click="createKeep" v-if="user.isAuthenticated">
+        <i class="fab fa-facebook-f text-info"></i><span class="outline-plus">ellowship</span>
+        <span><button type="button" aria-label="Add Keep" class="btn btn-outline-info bg-transparent border-0 outline-plus p-0 px-1 my-0 ml-2" @click="createKeep" v-if="user.isAuthenticated">
           <h2 class="m-0 p-0"><i class="fas fa-plus"></i></h2>
         </button></span>
       </h1>
