@@ -107,10 +107,6 @@ namespace keepr.server
 
             app.UseHttpsRedirection();
 
-            // TODO Add Default and Static Files
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
             app.UseRouting();
 
             // TODO[epic=Auth] Add Authentication so bearer gets validated
@@ -118,6 +114,10 @@ namespace keepr.server
 
 
             app.UseAuthorization();
+
+            // TODO Add Default and Static Files
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseEndpoints(endpoints =>
             {
