@@ -2,7 +2,7 @@
   <div class="card px-md-2 px-1 pb-md-4 pb-2 position-relative">
     <router-link :to="{name: 'Vault', params: {id: cardProp.id}}">
       <div class="position-relative">
-        <img class="w-100 box-shadow" alt="Vault Image" :src="cardProp.img">
+        <img class="w-100 box-shadow" alt="Vault Image" :src="cardProp.img" draggable="false">
         <h4 class="text-overlay text-shadow text-light font-lg">
           {{ cardProp.name }}
         </h4>

@@ -6,13 +6,14 @@
            alt="Keep Image"
            data-toggle="modal"
            data-target="#keepModal"
+           draggable="false"
            @click="setActiveKeep(keepProp.id)"
       >
       <h2 class="text-overlay text-shadow text-light font-lg">
         {{ keepProp.name }}
       </h2>
       <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
-        <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" @click="goToProfile">
+        <img class="icon icon-overlay rounded-circle" :src="keepProp.creator.picture" alt="Profile Icon" draggable="false" @click="goToProfile">
       </router-link>
       <button type="button"
               aria-label="Remove Keep from Vault"
