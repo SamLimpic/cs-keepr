@@ -43,7 +43,7 @@
               alt="user photo"
               height="40"
               class="rounded-circle"
-              loading="lazy"
+              loading="lazy" draggable="false"
             />
             <span class="mx-3 outline font-nav">{{ user.name }}</span>
           </div>

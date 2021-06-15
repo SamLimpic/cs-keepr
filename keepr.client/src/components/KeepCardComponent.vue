@@ -1,7 +1,7 @@
 <template>
   <div class="card px-md-2 px-1 pb-md-4 pb-2" v-if="cardProp.creatorId === profileProp">
     <div class="position-relative" data-toggle="modal" data-target="#keepModal" @click="setActiveKeep(cardProp.id)">
-      <img class="w-100 box-shadow" alt="Keep Image" :src="cardProp.img" loading="lazy">
+      <img class="w-100 box-shadow" alt="Keep Image" :src="cardProp.img" loading="lazy" draggable="false">
       <h4 class="text-overlay text-shadow text-light font-lg">
         {{ cardProp.name }}
       </h4>

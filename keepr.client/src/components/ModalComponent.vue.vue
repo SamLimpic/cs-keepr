@@ -18,7 +18,7 @@
             >
               <i class="fas fa-minus-circle font-lg"></i>
             </button>
-            <img class="w-100 p-3" :src="state.activeKeep.img" loading="lazy" alt="">
+            <img class="w-100 p-3" :src="state.activeKeep.img" loading="lazy" draggable="false" alt="">
           </div>
           <div class="col-md-6 col-12 order-md-2 order-1 position-relative">
             <div class="modal-header row justify-content-center position-relative pt-5">
@@ -115,7 +115,7 @@
                 <router-link :to="{name: 'Profile', params: {id: state.activeKeep.creatorId}}">
                   <h4 class="text-right text-info p-0 m-0" data-dismiss="modal" v-if="state.activeKeep.creator.picture !== null">
                     {{ state.activeKeep.creator.name.split('@')[0] }}
-                    <span><img class="rounded-circle icon ml-2 mr-md-3 mr-2" :src="state.activeKeep.creator.picture" loading="lazy" alt="" /></span>
+                    <span><img class="rounded-circle icon ml-2 mr-md-3 mr-2" :src="state.activeKeep.creator.picture" loading="lazy" draggable="false" alt="" /></span>
                   </h4>
                 </router-link>
               </div>
