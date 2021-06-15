@@ -17,7 +17,7 @@
         <img
           class="rounded-circle profile"
           :src="state.profile.picture"
-          draggable="false"
+          loading="lazy"
           alt=""
         />
       </div>
