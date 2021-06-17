@@ -36,6 +36,8 @@ main {
 .fa-ring:hover {
   color: var(--danger);
 }
+
+// SECTION Establishes Media Queries for responsive font sizing
 @media (min-width: 0) {
   .font-xs {
     font-size: 0.5rem;

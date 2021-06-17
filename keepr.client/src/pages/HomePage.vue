@@ -4,6 +4,8 @@
       <Keep v-for="k in state.keeps" :key="k.id" :keep-prop="k" />
     </div>
   </div>
+
+  <!-- NOTE state.loading: A quick & dirty visual trick to show the user that their content is loading -->
   <div class="loading container-fluid pt-5" v-else>
     <div class="row justify-content-center">
       <div class="col text-center pt-5">
@@ -31,6 +33,8 @@ export default {
     })
     onMounted(async() => {
       try {
+        // NOTE This timeout ensures consistent loading time across all pages
+        // It's also the perfect amount of time for the Ring icon to make one full rotation
         setTimeout(function() { state.loading = false }, 900)
         await tagsService.getTags()
         await keepsService.getKeeps()
@@ -47,6 +51,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// NOTE Home Page & Profile Page need separate Card Column media queries to fit the model
 @media (min-width: 0) {
   .card-columns {
     -webkit-column-count: 2;

@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR This Profile page is used for all accounts, with v-ifs that will activate editability if the user is on their own profile-->
   <div
     class="profile container-fluid py-md-4 py-2 px-md-5 px-4"
     v-if="!state.loading"
@@ -23,6 +24,7 @@
         />
       </div>
       <div class="col-md-10 col-7 pt-md-5">
+        <!-- STUB This is just a silly joke, and only relevant for one specific profile -->
         <div v-if="state.profile.name === 'Smeagol'">
           <h2 class="font-xxl" v-if="state.smeagol === 'Smeagol'">
             <u>{{ state.smeagol }}</u>
@@ -31,6 +33,7 @@
             <u><i>{{ state.smeagol }}</i></u>
           </h2>
         </div>
+
         <h2 class="font-xxl" v-else>
           <u>{{ state.profile.name.split("@")[0] }}</u>
         </h2>
@@ -50,6 +53,7 @@
               state.profile.id === state.account.id && state.private === false
             "
           >
+            <!-- NOTE An icon that hides Public vaults and shows Private vaults -->
             <button
               type="button"
               aria-label="Public or Private"
@@ -65,6 +69,7 @@
               state.profile.id === state.account.id && state.private === true
             "
           >
+            <!-- NOTE An icon that hides Private vaults and shows Public vaults -->
             <button
               type="button"
               aria-label="Public or Private"
@@ -153,6 +158,7 @@ export default {
     const state = reactive({
       loading: true,
       private: false,
+      // STUB Just part of that silly joke
       smeagol: 'Smeagol',
       profile: computed(() => AppState.profile),
       account: computed(() => AppState.account),
@@ -162,6 +168,7 @@ export default {
     })
     onMounted(async() => {
       try {
+        // NOTE This timeout ensures consistent loading time across all pages
         setTimeout(function() {
           state.loading = false
         }, 900)
@@ -170,6 +177,7 @@ export default {
         await vaultsService.getAllVaults(route.params.id)
         await vaultsService.getProfileVaults(route.params.id)
         AppState.vaults = state.vaults.filter(v => !v.isPrivate)
+        // STUB Silly joke that sets an interval to toggle between "Smeagol" & "Gollum" as the profile name when on Smeagol's profile
         if (state.profile.name === 'Smeagol') {
           setTimeout(function() {
             state.smeagol = 'Gollum'
@@ -195,6 +203,7 @@ export default {
       state,
       async createVault() {
         try {
+          // NOTE Calls SWEETALERT modals to create a new user Vault
           await Notification.vaultModal()
           await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
@@ -210,6 +219,7 @@ export default {
       },
       async createKeep() {
         try {
+          // NOTE Calls SWEETALERT modals to create a new Keep
           await Notification.keepModal()
           await keepsService.createKeep()
           if (AppState.rawTags[0]) {
@@ -226,11 +236,13 @@ export default {
         }
       },
       async editProfile() {
+        // NOTE Calls SWEETALERT modals to edit Profile info
         await Notification.editAccount()
         await accountService.editAccount(AppState.account)
         Notification.toast('Your profile was updated!', 'success')
       },
       async showPrivates(bool) {
+        // NOTE Function that toggles visible Vaults between Public and Private
         await vaultsService.getProfileVaults(state.account.id)
         if (bool) {
           AppState.vaults = state.vaults.filter(v => v.isPrivate)
@@ -268,6 +280,7 @@ img {
   top: -5px;
 }
 
+/* NOTE Home Page & Profile Page need separate Card Column media queries to fit the model */
 @media (min-width: 0) {
   .card-columns {
     -webkit-column-count: 2;

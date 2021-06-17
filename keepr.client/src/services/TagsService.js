@@ -9,6 +9,7 @@ class TagsService {
   }
 
   async createTags() {
+    // NOTE Checks the server for the submitted Tag Name and only adds any that do not already exist
     let rawTags = AppState.rawTags
     AppState.rawTags.forEach(r => {
       AppState.tags.forEach(t => {
@@ -26,6 +27,7 @@ class TagsService {
   }
 
   async createKeepTags(keep) {
+    // NOTE Ties existing Tags from the server to the specific Keep that they are to be added to
     AppState.rawTags.forEach(r => {
       AppState.newTags.push(AppState.tags.find(t => t.name === r))
     })

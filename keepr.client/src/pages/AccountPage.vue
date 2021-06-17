@@ -1,4 +1,6 @@
 <template>
+  <!-- ANCHOR this page comes stock with our template, and was redundant for the sake of this application -->
+  <!-- I instead used it as a template page before drafting up my components to ensure design cohesion  -->
   <div class="account container-fluid py-md-4 py-2 px-md-5 px-4" v-if="!state.loading">
     <div id="account-info" class="row justify-content-center">
       <div class="col-md-2 col-5 pt-md-4 pt-3">
@@ -189,7 +191,7 @@ export default {
   name: 'Account',
   setup() {
     const state = reactive({
-      // NOTE loading should equal TRUE to start, fix before run
+      // TODO loading should equal TRUE to start, fix before run
       loading: false,
       account: computed(() => AppState.account)
     })

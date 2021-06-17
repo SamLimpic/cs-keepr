@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR This page is designed purely for development purposes, as a means to ensure my design meets base accessibility standards -->
   <div class="access-test container">
     <div class="row justify-content-center">
       <div class="col-md-12 col-8 text-center">
@@ -12,6 +13,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
+            <!-- STUB If the button is disabled that means it did not pass Accessibility and will not be used on this background -->
             <button type="button" class="btn btn-lg btn-secondary" disabled>
               Secondary
             </button>
@@ -44,6 +46,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
+            <!-- STUB If the button is disabled that means it did not pass Accessibility and will not be used on this background -->
             <button type="button" class="btn btn-lg btn-outline-secondary" disabled>
               Secondary
             </button>
@@ -54,6 +57,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
+            <!-- STUB If the button is disabled that means it did not pass Accessibility and will not be used on this background -->
             <button type="button" class="btn btn-lg btn-outline-warning" disabled>
               Warning
             </button>
@@ -64,6 +68,7 @@
             </button>
           </div>
           <div class="col-md-2 col-12 my-2">
+            <!-- STUB If the button is disabled that means it did not pass Accessibility and will not be used on this background -->
             <button type="button" class="btn btn-lg btn-outline-info" disabled>
               Info
             </button>

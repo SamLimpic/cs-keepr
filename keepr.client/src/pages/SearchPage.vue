@@ -40,6 +40,7 @@ export default {
     })
     onMounted(async() => {
       try {
+        // NOTE This timeout ensures consistent loading time across all pages
         setTimeout(function() { state.loading = false }, 900)
         await keepsService.getKeepsByTag(state.activeTag.id)
       } catch (error) {
@@ -55,6 +56,7 @@ export default {
 
 <style scoped lang="scss">
 
+/* NOTE Home Page & Profile Page need separate Card Column media queries to fit the model */
 @media (min-width: 0) {
   .card-columns {
     -webkit-column-count: 2;

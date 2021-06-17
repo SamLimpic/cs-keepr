@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR Default NavBar from Template, modified to fit existing project -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
     <router-link class="navbar-brand d-flex outline" :to="{ name: 'Home' }">
       <h1 class="pl-2">
@@ -43,7 +44,8 @@
               alt="user photo"
               height="40"
               class="rounded-circle"
-              loading="lazy" draggable="false"
+              loading="lazy"
+              draggable="false"
             />
             <span class="mx-3 outline font-nav">{{ user.name }}</span>
           </div>
@@ -96,6 +98,7 @@ export default {
       },
       async createKeep() {
         try {
+          // NOTE Calls SWEETALERT modal to create a new Keep
           await Notification.keepModal()
           await keepsService.createKeep()
           if (AppState.rawTags[0]) {

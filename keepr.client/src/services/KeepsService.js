@@ -8,6 +8,7 @@ class KeepsService {
   }
 
   shuffleKeeps() {
+    // NOTE Simple Shuffle function to randomize the arrangement of Keeps on the Home Page
     const array = AppState.keeps
     let currentIndex = array.length; let randomIndex
 

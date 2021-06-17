@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR A simplified Keep Card was required for Profile display, as it lacks certain authenticated information generic Keeps contain -->
   <div class="card px-md-2 px-1 pb-md-4 pb-2" v-if="cardProp.creatorId === profileProp">
     <div class="position-relative" data-toggle="modal" data-target="#keepModal" @click="setActiveKeep(cardProp.id)">
       <img class="w-100 box-shadow" alt="Keep Image" :src="cardProp.img" loading="lazy" draggable="false">
@@ -36,6 +37,7 @@ export default {
       state,
       async setActiveKeep(id) {
         try {
+          // NOTE On click, this sets the Active Keep before loading the Keep Modal component
           AppState.loading = true
           setTimeout(function() { AppState.loading = false }, 1100)
           keepsService.setActiveKeep(id)

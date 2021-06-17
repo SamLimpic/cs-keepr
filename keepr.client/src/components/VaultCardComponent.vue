@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR This Vault Card only displays on a Profile page, and mimics the layout of the Keep Card -->
   <div class="card px-md-2 px-1 pb-md-4 pb-2 position-relative">
     <router-link :to="{name: 'Vault', params: {id: cardProp.id}}">
       <div class="position-relative">

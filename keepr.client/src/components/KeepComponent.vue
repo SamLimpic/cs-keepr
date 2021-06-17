@@ -50,6 +50,7 @@ export default {
       type: Object,
       required: true
     },
+    // NOTE If this prop is present it will hide certain properties not accessible to Vault-Keeps
     // eslint-disable-next-line vue/require-default-prop
     vaultKeepProp: {
       type: Object,
@@ -67,6 +68,7 @@ export default {
       state,
       async setActiveKeep(id) {
         try {
+          // NOTE On click, this sets the Active Keep before loading the Keep Modal component
           AppState.loading = true
           setTimeout(function() { AppState.loading = false }, 1100)
           keepsService.setActiveKeep(id)
@@ -80,6 +82,7 @@ export default {
       },
       async removeFromVault(vaultKeep) {
         try {
+          // NOTE SWEETALERT confirmation when deleting data
           if (await Notification.confirmAction('Are you sure?', `Do you want to remove ${vaultKeep.name} from this Vault?`, 'warning', `Delete ${vaultKeep.name}`)) {
             await vaultsService.removeFromVault(vaultKeep.vaultKeepId)
             await vaultsService.getVaultKeeps(vaultKeep.vaultId)

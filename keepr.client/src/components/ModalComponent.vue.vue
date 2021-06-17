@@ -1,4 +1,5 @@
 <template>
+  <!-- ANCHOR Bootstrap Modal in a dedicated Component -->
   <div class="modal fade"
        id="keepModal"
        tabindex="-1"
@@ -107,7 +108,7 @@
                   Add to Vault
                 </button>
 
-                <!-- NOTE Enable to quickly add tags to existing posts -->
+                <!-- STUB DEV TOOL: Enable to quickly add tags to existing posts -->
                 <!-- <button type="button" class="btn btn-primary border-0" data-dismiss="modal" @click="addTags">
                   <i class="fas fa-plus font-lg"></i>
                 </button> -->
@@ -156,6 +157,7 @@ export default {
       state,
       async createVault(keep) {
         try {
+          // NOTE Calls SWEETALERT modals to create a new Vault
           await Notification.vaultModal()
           await Notification.isPrivate(AppState.newVault)
           await vaultsService.createVault()
@@ -167,6 +169,7 @@ export default {
       },
       async deleteKeep(keep) {
         try {
+          // NOTE SWEETALERT confirmation when deleting data
           if (await Notification.confirmAction('Are you sure?', `${keep.name} will be gone for good!`, 'warning', `Delete ${keep.name}`)) {
             await keepsService.deleteKeep(keep.id)
             await keepsService.getKeeps(keep.id)
@@ -180,6 +183,7 @@ export default {
       },
       editName(event) {
         try {
+          // NOTE Dedicated function to modify Name field
           state.activeKeep.name = event.target.innerText
           state.edit = true
         } catch (error) {
@@ -188,6 +192,7 @@ export default {
       },
       editDescription(event) {
         try {
+          // NOTE Dedicated function to modify Description field
           state.activeKeep.description = event.target.innerText
           state.edit = true
         } catch (error) {
@@ -196,6 +201,7 @@ export default {
       },
       async editKeep() {
         try {
+          // NOTE Dedicated button function to confirm content-editable actions
           await keepsService.editKeep(state.activeKeep)
           location.reload()
         } catch (error) {
@@ -203,6 +209,7 @@ export default {
         }
       },
       async addTags() {
+        // STUB DEV TOOLS: Quickly add tags to an existing post
         await Notification.addTags()
         await tagsService.createTags()
         await tagsService.createKeepTags(state.activeKeep)

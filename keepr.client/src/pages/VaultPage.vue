@@ -70,6 +70,7 @@ export default {
     })
     onMounted(async() => {
       try {
+        // NOTE This timeout ensures consistent loading time across all pages
         setTimeout(function() { state.loading = false }, 900)
         vaultsService.setActiveVault(route.params.id)
         await vaultsService.getVaultKeeps(route.params.id)
@@ -81,6 +82,7 @@ export default {
       state,
       async deleteVault(vault) {
         try {
+          // NOTE SWEETALERT confirmation when deleting data
           if (await Notification.confirmAction('Are you sure?', `${vault.name} will be gone for good!`, 'warning', `Delete ${vault.name}`)) {
             await vaultsService.deleteVault(vault.id)
             router.push({ name: 'Profile', params: { id: vault.creatorId } })
@@ -112,6 +114,8 @@ export default {
 .edit:hover{
   border: 1px dashed var(--primary);
 }
+
+/* NOTE Home Page & Profile Page need separate Card Column media queries to fit the model */
 @media (min-width: 0) {
   .card-columns {
     -webkit-column-count: 2;
