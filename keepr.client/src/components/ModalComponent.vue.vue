@@ -24,13 +24,13 @@
           <div class="col-md-6 col-12 order-md-2 order-1 position-relative">
             <div class="modal-header row justify-content-center position-relative pt-5">
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="far fa-eye text-primary pr-3"></i></span>{{ state.activeKeep.views }}</h4>
+                <h4><span><i class="far fa-eye text-warning pr-3"></i></span>{{ state.activeKeep.views }}</h4>
               </div>
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="fab fa-kaggle text-primary pr-3"></i></span>{{ state.activeKeep.keeps }}</h4>
+                <h4><span><i class="fab fa-facebook-f text-info pr-3"></i></span>{{ state.activeKeep.keeps }}</h4>
               </div>
               <div class="col-md-3 col-4 text-center">
-                <h4><span><i class="fas fa-share-alt text-primary pr-3"></i></span>{{ state.activeKeep.shares }}</h4>
+                <h4><span><i class="fas fa-share-alt text-success pr-3"></i></span>{{ state.activeKeep.shares }}</h4>
               </div>
             </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close Modal">
