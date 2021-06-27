@@ -177,6 +177,7 @@ export default {
         await vaultsService.getAllVaults(route.params.id)
         await vaultsService.getProfileVaults(route.params.id)
         AppState.vaults = state.vaults.filter(v => !v.isPrivate)
+        keepsService.shuffleKeeps()
         // STUB Silly joke that sets an interval to toggle between "Smeagol" & "Gollum" as the profile name when on Smeagol's profile
         if (state.profile.name === 'Smeagol') {
           setTimeout(function() {
